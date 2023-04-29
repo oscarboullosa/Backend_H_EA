@@ -30,8 +30,8 @@ export class UserValue implements UserEntity{
         this.roleUser=roleUser;
         this.privacyUser=privacyUser;
         this.deletedUser=deletedUser;
-        this.followedUser=followersUser ?? ["default"];
-        this.followersUser=followersUser ?? ["default"];
+        this.followedUser=followersUser;
+        this.followersUser=followersUser;
 
 
     }
