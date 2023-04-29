@@ -19,7 +19,7 @@ const UserSchema = new Schema(
             type: String,
             required:true,
         },
-        /*mailUser:{
+        mailUser:{
             type: String,
             required:true,
             unique: true,
@@ -27,7 +27,7 @@ const UserSchema = new Schema(
         passwordUser:{
             type: String,
             required:true,
-        },*/
+        },
         photoUser:{
             type: String,
             required: true,

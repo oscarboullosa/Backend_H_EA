@@ -1,7 +1,9 @@
 import { Types } from "mongoose";
-import { UserEntity } from "../../domain/user.entity";
+import { AuthEntity, UserAuthEntity, UserEntity } from "../../domain/user.entity";
 import { UserRepository } from "../../domain/user.repository";
 import UserModel from "../model/user.schema";
+import {encrypt,verified} from "../utils/bcrypt.handle";
+import { generateToken } from "../utils/jwt.handle";
 
 export class MongoRepository implements UserRepository{
 
@@ -12,6 +14,7 @@ export class MongoRepository implements UserRepository{
 
     async listUser(): Promise<any> {
         const response = await UserModel.find();
+        console.log(response);
         return response;
     }
 
@@ -24,6 +27,36 @@ export class MongoRepository implements UserRepository{
         const user = await UserModel.create(data);
         return user;
     }
+
+    async registerUser(data: UserAuthEntity): Promise<any> {
+        const {appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}=data;
+        const checkIs = await UserModel.findOne({ mailUser });
+        if (checkIs) return "ALREADY_USER";
+        const passHash = await encrypt(passwordUser);
+        const encryptedData= {appUser,nameUser,surnameUser,mailUser,passwordUser:passHash,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser};
+
+        const user = await UserModel.create(encryptedData);
+        return user;
+    }
+
+    async loginUser(data:AuthEntity):Promise<any>{
+        const{mailUser,passwordUser}=data;
+        const checkIs=await UserModel.findOne({mailUser:mailUser});
+
+        if (!checkIs) return 'NOT_FOUND_USER';
+  
+
+        const passwordHash = checkIs.passwordUser; 
+        const isCorrect = await verified(passwordUser, passwordHash);
+        if (!isCorrect) return "PASSWORD_INCORRECT";
+    
+        if (checkIs.roleUser!=='admin') return 'USER_NOT_ADMIN';
+  
+        const token = generateToken(checkIs.mailUser, checkIs.roleUser);
+        const item = {token, user: checkIs};
+        return item;
+  };
+    
 
     async deleteUser(uuid:string):Promise<any>{
         const response = await UserModel.findOneAndRemove({uuid});

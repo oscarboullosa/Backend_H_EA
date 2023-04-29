@@ -1,5 +1,5 @@
 import { UserRepository } from "../domain/user.repository";
-import { UserValue } from "../domain/user.value";
+import { UserValue,UserAuthValue, AuthValue } from "../domain/user.value";
 
 export class UserUseCase{
     constructor(private readonly userRepository:UserRepository){}
@@ -24,6 +24,18 @@ export class UserUseCase{
         const userValue=new UserValue({appUser,nameUser,surnameUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
         const user=await this.userRepository.insertUser(userValue);
         return user;
+    }
+
+    public registerUser=async({appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{appUser:string,nameUser:string,surnameUser:string,mailUser:string,passwordUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=>{
+        const userAuthValue=new UserAuthValue({appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
+        const user=await this.userRepository.registerUser(userAuthValue);
+        return user;
+    }
+
+    public loginUser=async({mailUser,passwordUser}:{mailUser:string,passwordUser:string})=>{
+        const userAuthValue=new AuthValue({mailUser,passwordUser});
+        const loginUser=await this.userRepository.loginUser(userAuthValue);
+        return loginUser;
     }
 
     public deleteUser=async(uuid:string)=>{

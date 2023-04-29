@@ -1,4 +1,4 @@
-import { UserUseCase } from "../../application/userUserCase";
+import { UserUseCase } from "../../application/userUseCase";
 import { Request,Response } from "express";
 
 
@@ -8,6 +8,8 @@ export class UserController{
         this.listUserCtrl=this.listUserCtrl.bind(this);
         this.updateUserCtrl=this.updateUserCtrl.bind(this);
         this.insertUserCtrl=this.insertUserCtrl.bind(this);
+        this.registerUserCtrl=this.registerUserCtrl.bind(this);
+        this.loginUserCtrl=this.loginUserCtrl.bind(this);
         this.deleteUserCtrl=this.deleteUserCtrl.bind(this);
         this.listUserPagCtrl=this.listUserPagCtrl.bind(this);
         this.getNumUsersCtrl=this.getNumUsersCtrl.bind(this);
@@ -26,6 +28,7 @@ export class UserController{
 
     public async listUserCtrl(req:Request,res:Response){
         const response=await this.userUseCase.listUser();
+        console.log(response);
         res.send({response});
     }
 
@@ -37,6 +40,16 @@ export class UserController{
 
     public async insertUserCtrl({body}:Request,res:Response){
         const response=await this.userUseCase.insertUser(body);
+        res.send(response);
+    }
+
+    public async registerUserCtrl({body}:Request,res:Response){
+        const response = await this.userUseCase.registerUser(body);
+        res.send(response);
+    }
+
+    public async loginUserCtrl({ body }: Request, res: Response){
+        const response=await this.userUseCase.loginUser(body);
         res.send(response);
     }
 
