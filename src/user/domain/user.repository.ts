@@ -1,7 +1,7 @@
 import { AuthEntity, UserEntity,UserAuthEntity } from "./user.entity";
 
 export interface UserRepository{
-    getUserById(uuid:string):Promise<UserEntity|null>;
+    getUserById(uuid:String):Promise<UserEntity|null>;
     listUser():Promise<UserEntity[]|null>;
     updateUser(uuid:String,data:UserEntity):Promise<UserEntity|null>;
     registerUser(data:UserAuthEntity):Promise<UserAuthEntity|null>;

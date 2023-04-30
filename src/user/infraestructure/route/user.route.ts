@@ -9,9 +9,9 @@ const userRepo=new MongoRepository();
 const userUseCase = new UserUseCase(userRepo)
 const userCtrl = new UserController(userUseCase)
 
-//route.get("/user/:uuid",userCtrl.getUserByIdCtrl);
+route.get("/user/:uuid",userCtrl.getUserByIdCtrl);
 route.get("/user/all",userCtrl.listUserCtrl);
-//route.get("/user/all/:numPage",userCtrl.listUserPagCtrl);
+route.get("/user/all/:numPage",userCtrl.listUserPagCtrl);
 route.get("/user/all/count/docs",userCtrl.getNumUsersCtrl);
 route.get("/user/follower/:uuid/:numPage", userCtrl.listFollowersPagCtrl);
 route.get("/user/followed/:uuid/:numPage", userCtrl.listFollowedPagCtrl);

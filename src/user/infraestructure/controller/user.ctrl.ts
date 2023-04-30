@@ -16,13 +16,14 @@ export class UserController{
         this.listFollowersPagCtrl=this.listFollowersPagCtrl.bind(this);
         this.listFollowedPagCtrl=this.listFollowedPagCtrl.bind(this);
         this.insertFollowerCtrl=this.insertFollowerCtrl.bind(this);
+        this.insertFollowedCtrl=this.insertFollowedCtrl.bind(this);
         this.deleteFollowerCtrl=this.deleteFollowerCtrl.bind(this);
     }
 
-    public async getUserByIdCtrl({query}:Request,res:Response){
-        const { uuid = '' } = query;
+    public async getUserByIdCtrl({params}:Request,res:Response){
+        const { uuid = '' } = params;
+        console.log(params);
         const response=await this.userUseCase.getUserById(`${uuid}`);
-        console.log(response);
         res.send({response})
     }
 
@@ -32,8 +33,8 @@ export class UserController{
         res.send({response});
     }
 
-    public async updateUserCtrl({query,body}:Request,res:Response){
-        const { uuid = '' } = query;
+    public async updateUserCtrl({params,body}:Request,res:Response){
+        const { uuid = '' } = params;
         const response=await this.userUseCase.updateUser(`${uuid}`,body);
         res.send(response);
     }
@@ -48,14 +49,14 @@ export class UserController{
         res.send(response);
     }
 
-    public async deleteUserCtrl({query}:Request,res:Response){
-        const { uuid = '' } = query;
+    public async deleteUserCtrl({params}:Request,res:Response){
+        const { uuid = '' } = params;
         const response=await this.userUseCase.deleteUser(`${uuid}`);
         res.send(response);
     }
 
-    public async listUserPagCtrl({query}:Request,res:Response){
-        const {numPage=''}=query;
+    public async listUserPagCtrl({params}:Request,res:Response){
+        const {numPage=''}=params;
         const response=await this.userUseCase.listUserPag(`${numPage}`);
         res.send(response);
     }

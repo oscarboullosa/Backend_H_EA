@@ -8,6 +8,7 @@ import { generateToken } from "../utils/jwt.handle";
 export class MongoRepository implements UserRepository{
 
     async getUserById(uuid: string): Promise<any> {
+        console.log(uuid);
         const response = await UserModel.findOne({uuid});
         console.log(response);
         return response;
@@ -103,7 +104,7 @@ export class MongoRepository implements UserRepository{
 
     async insertFollower(uuid:string,uuidFollower:string):Promise<any>{
         const response=await UserModel.findOneAndUpdate(
-            {uuid},
+            {_id:uuid},
             {$addToSet:{followersUser:new Types.ObjectId(uuidFollower)}},
             {new:true}
         ).populate('followersUser');
@@ -111,11 +112,12 @@ export class MongoRepository implements UserRepository{
     }
 
     async insertFollowed(uuid:string,uuidFollowed:string):Promise<any>{
+        console.log(uuid,uuidFollowed);
         const response=await UserModel.findOneAndUpdate(
-            {uuid},
+            {_id:uuid},
             {$addToSet:{followedUser:new Types.ObjectId(uuidFollowed)}},
             {new:true}
-        ).populate('followerdUser');
+        ).populate('followedUser');
         return response;
     }
 
