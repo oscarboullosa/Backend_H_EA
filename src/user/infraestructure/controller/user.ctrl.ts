@@ -7,7 +7,6 @@ export class UserController{
         this.getUserByIdCtrl = this.getUserByIdCtrl.bind(this);
         this.listUserCtrl=this.listUserCtrl.bind(this);
         this.updateUserCtrl=this.updateUserCtrl.bind(this);
-        this.insertUserCtrl=this.insertUserCtrl.bind(this);
         this.registerUserCtrl=this.registerUserCtrl.bind(this);
         this.loginUserCtrl=this.loginUserCtrl.bind(this);
         this.deleteUserCtrl=this.deleteUserCtrl.bind(this);
@@ -23,6 +22,7 @@ export class UserController{
     public async getUserByIdCtrl({query}:Request,res:Response){
         const { uuid = '' } = query;
         const response=await this.userUseCase.getUserById(`${uuid}`);
+        console.log(response);
         res.send({response})
     }
 
@@ -35,11 +35,6 @@ export class UserController{
     public async updateUserCtrl({query,body}:Request,res:Response){
         const { uuid = '' } = query;
         const response=await this.userUseCase.updateUser(`${uuid}`,body);
-        res.send(response);
-    }
-
-    public async insertUserCtrl({body}:Request,res:Response){
-        const response=await this.userUseCase.insertUser(body);
         res.send(response);
     }
 

@@ -10,5 +10,5 @@ app.use(express.json());
 const port = process.env.PORT || 3001;
 
 app.use(route);
-dbInit().then();
+dbInit().then(()=> console.log("Connection to MongoDB is ready"));
 app.listen(port, () => console.log(`USER, Ready on port ${port}`));

@@ -1,40 +1,50 @@
 import { UserRepository } from "../domain/user.repository";
 import { UserValue,UserAuthValue, AuthValue } from "../domain/user.value";
+import { NotFoundError } from "./notFoundError";
 
 export class UserUseCase{
     constructor(private readonly userRepository:UserRepository){}
 
     public getUserById=async(uuid:string)=>{
-        const user=await this.userRepository.getUserById(uuid);
+        const user = await this.userRepository.getUserById(uuid);
+        if (!user) {
+            throw new NotFoundError("User not found");
+        }
         return user;
     }
 
     public listUser=async()=>{
         const listUser=await this.userRepository.listUser();
+        if (!listUser) {
+            throw new NotFoundError("List not found");
+        }
         return listUser;
     }
 
-    public updateUser=async(uuid:string,{appUser,nameUser,surnameUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{appUser:string,nameUser:string,surnameUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=>{
-        const userValue=new UserValue({appUser,nameUser,surnameUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
+    public updateUser=async(uuid:string,{appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{appUser:string,nameUser:string,surnameUser:string,mailUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=>{
+        const userValue=new UserValue({appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
         const user=await this.userRepository.updateUser(uuid,userValue);
+        if (!user) {
+            throw new NotFoundError("User not found");
+        }
         return user;
     }
 
-    public insertUser=async({appUser,nameUser,surnameUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{appUser:string,nameUser:string,surnameUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=>{
-        const userValue=new UserValue({appUser,nameUser,surnameUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
-        const user=await this.userRepository.insertUser(userValue);
-        return user;
-    }
-
-    public registerUser=async({appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{appUser:string,nameUser:string,surnameUser:string,mailUser:string,passwordUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=>{
+    public registerUser=async({uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{uuid:string,appUser:string,nameUser:string,surnameUser:string,mailUser:string,passwordUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=>{
         const userAuthValue=new UserAuthValue({appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
         const user=await this.userRepository.registerUser(userAuthValue);
+        if (!user) {
+            throw new NotFoundError("User not found");
+        }
         return user;
     }
 
     public loginUser=async({mailUser,passwordUser}:{mailUser:string,passwordUser:string})=>{
         const userAuthValue=new AuthValue({mailUser,passwordUser});
         const loginUser=await this.userRepository.loginUser(userAuthValue);
+        if (!loginUser) {
+            throw new NotFoundError("User not found");
+        }
         return loginUser;
     }
 

@@ -9,6 +9,7 @@ export class MongoRepository implements UserRepository{
 
     async getUserById(uuid: string): Promise<any> {
         const response = await UserModel.findOne({uuid});
+        console.log(response);
         return response;
     }
 
@@ -21,11 +22,6 @@ export class MongoRepository implements UserRepository{
     async updateUser(uuid:string,data:UserEntity):Promise<any>{
         const response=await UserModel.findOneAndUpdate({uuid},data,{new:true});
         return response;
-    }
-
-    async insertUser(data:UserEntity):Promise<any>{
-        const user = await UserModel.create(data);
-        return user;
     }
 
     async registerUser(data: UserAuthEntity): Promise<any> {

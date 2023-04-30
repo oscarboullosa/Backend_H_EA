@@ -3,6 +3,7 @@ export interface UserEntity {
     appUser: string;
     nameUser: string;
     surnameUser: string;
+    mailUser:string;
     photoUser: string;
     birthdateUser: Date;
     genderUser: "male" | "female";
@@ -20,21 +21,6 @@ export interface AuthEntity{
     passwordUser:string;
 }
 
-export interface UserAuthEntity{
-    uuid:string;
-    appUser: string;
-    nameUser: string;
-    surnameUser: string;
-    mailUser:string;
+export interface UserAuthEntity extends UserEntity{
     passwordUser:string;
-    photoUser: string;
-    birthdateUser: Date;
-    genderUser: "male" | "female";
-    ocupationUser?: string;
-    descriptionUser: string;
-    roleUser: "admin" | "common" | "verified" | "business";
-    privacyUser: boolean;
-    deletedUser: boolean;
-    followersUser?: [string];
-    followedUser?: [string];
 }

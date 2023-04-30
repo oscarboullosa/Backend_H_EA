@@ -1,9 +1,12 @@
 import {  Schema, Types, model, Model } from "mongoose";
+import {v4 as uuid} from "uuid";
 
 const UserSchema = new Schema(
     {
         uuid: {
             type: String,
+            default:()=>uuid(),
+            required:true,
             unique: true,
           },
         appUser:{
