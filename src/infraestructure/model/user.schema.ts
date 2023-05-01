@@ -1,4 +1,4 @@
-import {  Schema, Types, model, Model } from "mongoose";
+import {  Schema, model, } from "mongoose";
 import {v4 as uuid} from "uuid";
 
 const UserSchema = new Schema(
