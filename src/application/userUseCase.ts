@@ -1,5 +1,5 @@
-import { UserRepository } from "../domain/user.repository";
-import { UserValue,UserAuthValue, AuthValue } from "../domain/user.value";
+import { UserRepository } from "../domain/user/user.repository";
+import { UserValue,UserAuthValue, AuthValue } from "../domain/user/user.value";
 import { NotFoundError } from "./notFoundError";
 
 export class UserUseCase{
@@ -22,7 +22,7 @@ export class UserUseCase{
     }
 
     public updateUser=async(uuid:string,{appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{appUser:string,nameUser:string,surnameUser:string,mailUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=>{
-        const userValue=new UserValue({appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
+        const userValue=new UserValue({uuid,appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
         const user=await this.userRepository.updateUser(uuid,userValue);
         if (!user) {
             throw new NotFoundError("User not found");
@@ -31,7 +31,7 @@ export class UserUseCase{
     }
 
     public registerUser=async({uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{uuid:string,appUser:string,nameUser:string,surnameUser:string,mailUser:string,passwordUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=>{
-        const userAuthValue=new UserAuthValue({appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
+        const userAuthValue=new UserAuthValue({uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
         const user=await this.userRepository.registerUser(userAuthValue);
         if (!user) {
             throw new NotFoundError("User not found");

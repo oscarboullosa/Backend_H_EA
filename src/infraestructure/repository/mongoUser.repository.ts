@@ -1,15 +1,15 @@
 import { Types } from "mongoose";
-import { AuthEntity, UserAuthEntity, UserEntity } from "../../domain/user.entity";
-import { UserRepository } from "../../domain/user.repository";
+import { AuthEntity, UserAuthEntity, UserEntity } from "../../domain/user/user.entity";
+import { UserRepository } from "../../domain/user/user.repository";
 import UserModel from "../model/user.schema";
 import {encrypt,verified} from "../utils/bcrypt.handle";
 import { generateToken } from "../utils/jwt.handle";
 
-export class MongoRepository implements UserRepository{
+export class MongoUserRepository implements UserRepository{
 
     async getUserById(uuid: string): Promise<any> {
         console.log(uuid);
-        const response = await UserModel.findOne({uuid});
+        const response = await UserModel.findOne({_id:uuid});
         console.log(response);
         return response;
     }
@@ -21,7 +21,7 @@ export class MongoRepository implements UserRepository{
     }
 
     async updateUser(uuid:string,data:UserEntity):Promise<any>{
-        const response=await UserModel.findOneAndUpdate({uuid},data,{new:true});
+        const response=await UserModel.findOneAndUpdate({_id:uuid},data,{new:true});
         return response;
     }
 
@@ -56,7 +56,7 @@ export class MongoRepository implements UserRepository{
     
 
     async deleteUser(uuid:string):Promise<any>{
-        const response = await UserModel.findOneAndRemove({uuid});
+        const response = await UserModel.findOneAndRemove({_id:uuid});
         return response;
     }
 
@@ -123,7 +123,7 @@ export class MongoRepository implements UserRepository{
 
     async deleteFollower(uuid:string,uuidFollower:string):Promise<any>{
         const response = await UserModel.findOneAndUpdate(
-          {uuid},
+          {_id:uuid},
           {$pull: {followersUser: new Types.ObjectId(uuidFollower)}},
           {new: true}
         );
@@ -132,7 +132,7 @@ export class MongoRepository implements UserRepository{
 
     async deleteFollowed(uuid:string,uuidFollowed:string):Promise<any>{
         const response = await UserModel.findOneAndUpdate(
-          {uuid},
+          {_id:uuid},
           {$pull: {followedUser: new Types.ObjectId(uuidFollowed)}},
           {new: true}
         );
