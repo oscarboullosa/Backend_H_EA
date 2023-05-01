@@ -54,9 +54,9 @@ export class CommentUseCase{
         return numComments;
     }
 
-    public responseComment=async({uuid,idUserComment,idPublicationComment,textComment,likesComment,responseComment}:{uuid:string,idUserComment:string,idPublicationComment:string,textComment:string,likesComment:[string],responseComment:[string]})=>{
+    public responseComment=async(uuid:string,{idUserComment,idPublicationComment,textComment,likesComment,responseComment}:{idUserComment:string,idPublicationComment:string,textComment:string,likesComment:[string],responseComment:[string]})=>{
         const commentValue=new CommentValue({uuid,idUserComment,idPublicationComment,textComment,likesComment,responseComment});
-        const comment=await this.commentRepository.responseComment(commentValue);
+        const comment=await this.commentRepository.responseComment(uuid,commentValue);
         if (!comment) {
             throw new NotFoundError("Comment not found");
         }
