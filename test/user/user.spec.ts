@@ -1,8 +1,8 @@
-import { UserRepository } from './../../src/user/domain/user.repository';
-import { UserAuthEntity, UserEntity } from './../../src/user/domain/user.entity';
-import { UserAuthValue, UserValue, AuthValue } from './../../src/user/domain/user.value';
-import { UserUseCase } from "../../src/user/application/userUseCase";
-import { NotFoundError } from '../../src/user/application/notFoundError';
+import { UserRepository } from './../../src/domain/user/user.repository';
+import { UserAuthEntity, UserEntity } from './../../src/domain/user/user.entity';
+import { UserAuthValue, UserValue, AuthValue } from './../../src/domain/user/user.value';
+import { UserUseCase } from "../../src/application/userUseCase";
+import { NotFoundError } from '../../src/application/notFoundError';
 
 describe("UserUseCase", () => {
   let userRepository: UserRepository;
