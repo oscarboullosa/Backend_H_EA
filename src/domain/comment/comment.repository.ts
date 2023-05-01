@@ -3,7 +3,7 @@ import { CommentEntity } from "./comment.entity";
 export interface CommentRepository{
     getCommentPublicationByIdPag(uuidPublication:string,numPage:string):Promise<CommentEntity|null>;
     insertCommentPublication(data:CommentEntity):Promise<CommentEntity|null>;
-    responseComment(uuid:string,data:CommentEntity):Promise<CommentEntity|null>;
+    responseComment(data:CommentEntity):Promise<CommentEntity|null>;
     updateCommentPublication(uuid:string,data:CommentEntity):Promise<CommentEntity|null>;
     deleteCommentPublication(uuid:string):Promise<CommentEntity|null>;
     listComment():Promise<CommentEntity[]|null>;
