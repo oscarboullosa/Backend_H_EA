@@ -8,6 +8,6 @@ export interface ActivityRepository{
     listActivity():Promise<ActivityEntity[]|null>;
     getActivityById(uuid:string):Promise<ActivityEntity|null>;
     listActivityPag(numPage:string):Promise<ActivityEntity[]|null>;
-    getParticipantsOfActivity(uuid:string,numPage):Promise<UserEntity[]|null>;
+    getParticipantsOfActivity(uuid:string,numPage:string):Promise<UserEntity[]|null>;
     getNumActivity():Promise<String|null>
 }
