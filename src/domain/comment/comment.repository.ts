@@ -11,5 +11,5 @@ export interface CommentRepository{
     updateLikes(uuid:string,uuidUser:string):Promise<CommentEntity|null>;
     listCommentPag(numPage:string):Promise<CommentEntity[]|null>;
     listResponsesPag(uuid:string,numPage:string):Promise<CommentEntity[]|null>;
-    getNumComments():Promise<CommentEntity|null>;
+    getNumComments():Promise<String|null>;
 }
