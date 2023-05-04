@@ -1,6 +1,7 @@
 import { CommentEntity } from "../../domain/comment/comment.entity";
 import { CommentRepository } from "../../domain/comment/comment.repository";
 import CommentModel from "../model/comment.schema";
+import PublicationModel from "../model/publication.schema";
 
 export class MongoCommentRepository implements CommentRepository{
     
@@ -11,14 +12,11 @@ export class MongoCommentRepository implements CommentRepository{
         return responseItem;
     }
     
-    insertCommentPublication(data: CommentEntity): Promise<CommentEntity | null> {
-        throw new Error("Method not implemented.");
-    }
-    /*async insertCommentPublication(data:CommentEntity):Promise<any>{
+    async insertCommentPublication(data:CommentEntity):Promise<any>{
         const responseInsert = await CommentModel.create(data);
         const responseItem = await PublicationModel.findOneAndUpdate({ _id: data.idPublicationComment }, { $addToSet: { commentsPublication: responseInsert._id } },{new: true});
         return responseItem;
-    }*/
+    }
 
     async responseComment(uuid:string,data:CommentEntity):Promise<any>{
         const responseInsert = await CommentModel.create(data);
