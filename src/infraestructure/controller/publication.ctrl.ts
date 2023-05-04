@@ -39,6 +39,7 @@ export class PublicationController{
 
     public async deletePublicationCtrl({params}:Request,res:Response){
         const { uuid = '' } = params;
+        console.log(uuid);
         const response=await this.publicationUseCase.deletePublication(`${uuid}`);
         res.send(response);
     }
@@ -55,8 +56,8 @@ export class PublicationController{
         res.send(data);
     }
 
-    public async updateLikesCtrl({params}:Request,res:Response){
-        const {uuid, uuidUser}=params;
+    public async updateLikesCtrl({body}:Request,res:Response){
+        const {uuid, uuidUser}=body;
         const response=await this.publicationUseCase.updateLikes(uuid,uuidUser);
         res.send(response);
     }

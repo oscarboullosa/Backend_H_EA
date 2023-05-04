@@ -1,3 +1,4 @@
+import mongoose, { Types } from 'mongoose';
 import { PublicationEntity } from '../../domain/publication/publication.entity';
 import PublicationModel from '../model/publication.schema';
 import { PublicationRepository } from './../../domain/publication/publication.repository';
@@ -26,6 +27,7 @@ export class MongoPublicationRepository implements PublicationRepository{
 
     async deletePublication(uuid: string): Promise<any> {
         const response=await PublicationModel.findOneAndRemove({_id:uuid});
+        console.log(response);
         return response;
     }
     
@@ -42,8 +44,11 @@ export class MongoPublicationRepository implements PublicationRepository{
     }
 
     async updateLikes(uuid: string, uuidUser: string): Promise<any> {
-        const responseItem = await PublicationModel.findOneAndUpdate({_id: uuid}, { $addToSet: { likesPublication: uuidUser } } ,{new: true});
-    return responseItem;
+        const responseItem = await PublicationModel.findOneAndUpdate(
+            {_id: uuid}, 
+            { $addToSet: {likesPublication: new Types.ObjectId(uuidUser) } } ,
+            {new: true}
+            )
+        return responseItem;
     }
-
 }

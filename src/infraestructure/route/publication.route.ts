@@ -19,4 +19,6 @@ routePublication.put("/publication/parameter/like",publicationCtrl.updateLikesCt
 
 routePublication.delete("/publication/:uuid",publicationCtrl.deletePublicationCtrl);
 
-routePublication.post("publication",publicationCtrl.insertPublicationCtrl);
+routePublication.post("/publication",publicationCtrl.insertPublicationCtrl);
+
+export default routePublication;
