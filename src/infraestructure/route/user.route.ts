@@ -2,6 +2,7 @@ import { Router } from "express";
 import { UserUseCase } from "../../application/userUseCase";
 import { UserController } from "../controller/user.ctrl";
 import { MongoUserRepository } from "../repository/mongoUser.repository";
+import { logMiddleware } from "../controller/login.ctrl";
 
 const routeUser = Router();
 
@@ -10,7 +11,7 @@ const userUseCase = new UserUseCase(userRepo)
 const userCtrl = new UserController(userUseCase)
 
 routeUser.get("/user/:uuid",userCtrl.getUserByIdCtrl);
-routeUser.get("/users/all",userCtrl.listUserCtrl);
+routeUser.get("/users/all",logMiddleware);
 routeUser.get("/user/all/:numPage",userCtrl.listUserPagCtrl);
 routeUser.get("/user/all/count/docs",userCtrl.getNumUsersCtrl);
 routeUser.get("/user/follower/:uuid/:numPage", userCtrl.listFollowersPagCtrl);

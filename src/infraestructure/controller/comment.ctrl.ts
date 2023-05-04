@@ -22,11 +22,10 @@ export class CommentController{
         const data=response ? response:"NOT_FOUND";
         res.send(data);
         }
-    
+
     public async insertCommentPublicationCtrl({body}:Request,res:Response){
         const response=await this.commentUseCase.insertCommentPublication(body);
-        const data=response ? response:"NOT_FOUND";
-        res.send(data);
+        res.send(response);
     }
 
     public async responseCommentCtrl({params,body}:Request,res:Response){
