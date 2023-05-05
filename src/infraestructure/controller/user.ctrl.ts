@@ -18,6 +18,7 @@ export class UserController{
         this.insertFollowerCtrl=this.insertFollowerCtrl.bind(this);
         this.insertFollowedCtrl=this.insertFollowedCtrl.bind(this);
         this.deleteFollowerCtrl=this.deleteFollowerCtrl.bind(this);
+        this.deleteFollowedCtrl=this.deleteFollowedCtrl.bind(this);
     }
 
     public async getUserByIdCtrl({params}:Request,res:Response){
@@ -69,17 +70,13 @@ export class UserController{
     
 
     public async listFollowersPagCtrl(req: Request, res: Response){
-        const { uuid = '' } = req.query;
-        const { numPage = '' } = req.query;
-
+        const { uuid = '' ,numPage = '' } = req.params;
         const response = await this.userUseCase.listFollowersPag(`${uuid}`, `${numPage}`);
         res.send(response);
     }
 
     public async listFollowedPagCtrl(req: Request, res: Response){
-        const { uuid = '' } = req.query;
-        const { numPage = '' } = req.query;
-
+        const { uuid = '' ,numPage = '' } = req.params;
         const response = await this.userUseCase.listFollowedPag(`${uuid}`, `${numPage}`);
         res.send(response);
     }
@@ -96,15 +93,15 @@ export class UserController{
         res.send(response);
     }
 
-    public async deleteFollowerCtrl(req:Request,res:Response){
-        const { uuid, uuidFollower } = req.params;
-        const response = await this.userUseCase.deleteFollower(uuid, uuidFollower);
+    public async deleteFollowerCtrl({body}:Request,res:Response){
+        const{uuid,uuidFollower}=body;
+        const response = await this.userUseCase.deleteFollower(uuid,uuidFollower);
         res.send(response);
     }
 
-    public async deleteFollowedCtrl(req:Request,res:Response){
-        const { uuid, uuidFollowed } = req.params;
-        const response = await this.userUseCase.deleteFollowed(uuid, uuidFollowed);
+    public async deleteFollowedCtrl({body}:Request,res:Response){
+        const{uuid,uuidFollowed}=body;
+        const response=await this.userUseCase.deleteFollowed(uuid,uuidFollowed);
         res.send(response);
     }
 }

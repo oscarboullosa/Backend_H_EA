@@ -10,23 +10,23 @@ const userRepo=new MongoUserRepository();
 const userUseCase = new UserUseCase(userRepo)
 const userCtrl = new UserController(userUseCase)
 
-routeUser.get("/user/:uuid",userCtrl.getUserByIdCtrl);
-routeUser.get("/users/all",logMiddleware);
-routeUser.get("/user/all/:numPage",userCtrl.listUserPagCtrl);
+routeUser.get("/user/:uuid",userCtrl.getUserByIdCtrl);//ok
+routeUser.get("/users/all",logMiddleware,userCtrl.listUserCtrl);//OK
+routeUser.get("/user/all/:numPage",userCtrl.listUserPagCtrl);//ok
 routeUser.get("/user/all/count/docs",userCtrl.getNumUsersCtrl);
-routeUser.get("/user/follower/:uuid/:numPage", userCtrl.listFollowersPagCtrl);
-routeUser.get("/user/followed/:uuid/:numPage", userCtrl.listFollowedPagCtrl);
+routeUser.get("/user/follower/:uuid/:numPage", userCtrl.listFollowersPagCtrl);//ok
+routeUser.get("/user/followed/:uuid/:numPage", userCtrl.listFollowedPagCtrl);//ok
 
-routeUser.put("/user/:uuid",userCtrl.updateUserCtrl);
+routeUser.put("/user/:uuid",userCtrl.updateUserCtrl);//ok
 
-routeUser.post('/user/follower', userCtrl.insertFollowerCtrl);
-routeUser.post('/user/followed', userCtrl.insertFollowedCtrl);
+routeUser.post('/user/follower', userCtrl.insertFollowerCtrl);//ok
+routeUser.post('/user/followed', userCtrl.insertFollowedCtrl);//ok
 routeUser.post('/user/register',userCtrl.registerUserCtrl);//ok
-routeUser.post('/user/login',userCtrl.loginUserCtrl);
+routeUser.post('/user/login',userCtrl.loginUserCtrl);//Ok
 
-routeUser.delete("/user/:uuid",userCtrl.deleteUserCtrl);
-routeUser.delete('/user/follower/:uuid/:uuidfollower', userCtrl.deleteFollowerCtrl);
-routeUser.delete('/user/followed/:uuid/:uuidfollowed', userCtrl.deleteFollowedCtrl);
+routeUser.delete("/user/:uuid",userCtrl.deleteUserCtrl);//ok
+routeUser.delete('/user/follower/this', userCtrl.deleteFollowerCtrl);
+routeUser.delete('/user/followed/this', userCtrl.deleteFollowedCtrl);
 
 
 export default routeUser;

@@ -108,61 +108,6 @@ describe("UserUseCase", () => {
       expect(userRepository.listUser).toHaveBeenCalled();
     });
   });
-
-  /*describe('insertUser', () => {
-    it('should insert a new user', async () => {
-      const user: UserEntity = {
-        appUser: 'TestApp',
-        nameUser: 'John',
-        surnameUser: 'Doe',
-        mailUser: 'johndoe@example.com',
-        photoUser: 'http://example.com/johndoe.png',
-        birthdateUser: new Date(1990, 0, 1),
-        genderUser: 'male',
-        ocupationUser: 'Developer',
-        descriptionUser: 'Lorem ipsum',
-        roleUser: 'common',
-        privacyUser: true,
-        deletedUser: false,
-        uuid: ''
-      };
-
-      expect(user).toBeDefined();
-      expect(user.appUser).toEqual('TestApp');
-      expect(user.nameUser).toEqual('John');
-      expect(user.surnameUser).toEqual('Doe');
-      expect(user.mailUser).toEqual('johndoe@example.com');
-      expect(user.photoUser).toEqual('http://example.com/johndoe.png');
-      expect(user.birthdateUser).toEqual(new Date(1990, 0, 1));
-      expect(user.genderUser).toEqual('male');
-      expect(user.ocupationUser).toEqual('Developer');
-      expect(user.descriptionUser).toEqual('Lorem ipsum');
-      expect(user.roleUser).toEqual('common');
-      expect(user.privacyUser).toEqual(true);
-      expect(user.deletedUser).toEqual(false);
-
-    });
-
-    it('should throw a NotFoundError if user is not found', async () => {
-      userRepository.insertUser = jest.fn().mockResolvedValue(null);
-
-      await expect(userUseCase.insertUser({
-        appUser: 'TestApp',
-        nameUser: 'John',
-        surnameUser: 'Doe',
-        mailUser: 'johndoe@example.com',
-        photoUser: 'http://example.com/johndoe.png',
-        birthdateUser: new Date(1990, 0, 1),
-        genderUser: 'male',
-        ocupationUser: 'Developer',
-        descriptionUser: 'Lorem ipsum',
-        roleUser: 'common',
-        privacyUser: true,
-        deletedUser: false,
-      })).rejects.toThrow(NotFoundError);
-    });
-  });*/
-
   
   describe('registerUser', () => {
     it('should register a new user', async () => {
