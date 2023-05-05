@@ -1,9 +1,13 @@
 import { UserUseCase } from "../../application/userUseCase";
 import { Request,Response } from "express";
+import { EmailService,NodemailerEmailService } from "../emailSender/emailSender";
+import { UserAuthEntity, UserEntity } from "../../domain/user/user.entity";
 
 
 export class UserController{
+    emailService: EmailService;
     constructor(private userUseCase:UserUseCase){
+        this.emailService=new NodemailerEmailService();
         this.getUserByIdCtrl = this.getUserByIdCtrl.bind(this);
         this.listUserCtrl=this.listUserCtrl.bind(this);
         this.updateUserCtrl=this.updateUserCtrl.bind(this);
@@ -40,9 +44,29 @@ export class UserController{
         res.send(response);
     }
 
-    public async registerUserCtrl({body}:Request,res:Response){
+    /*public async registerUserCtrl({body}:Request,res:Response){
         const response = await this.userUseCase.registerUser(body);
         res.send(response);
+    }*/
+
+    public async registerUserCtrl({body}:Request,res:Response){
+        const response = await this.userUseCase.registerUser(body);
+        const user = response as UserAuthEntity;
+
+        const sender = 'grupo3ea.eetac@gmail.com';
+        const recipient = user.mailUser;
+        const subject = 'Bienvenido a mi aplicación';
+        const skelleton = 'Hola ' + user.nameUser + ',\n\nBienvenido a mi aplicación. ¡Gracias por registrarte!';
+
+        try {
+        await this.emailService.sendEmail(sender, recipient, subject, skelleton);
+        console.log('Correo electrónico enviado a ' + recipient);
+        } catch (err) {
+        console.error('Error al enviar el correo electrónico', err);
+        }
+
+        res.send(response);
+
     }
 
     public async loginUserCtrl({ body }: Request, res: Response){
