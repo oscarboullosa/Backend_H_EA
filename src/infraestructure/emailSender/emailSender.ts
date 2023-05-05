@@ -17,12 +17,12 @@ export interface EmailService {
       });
     }
   
-    async sendEmail(sender: string, recipient: string, subject: string, body: string): Promise<void> {
+    async sendEmail(sender: string, recipient: string, subject: string, skelleton: string): Promise<void> {
       const mailOptions = {
         from: sender,
         to: recipient,
         subject: subject,
-        text: body
+        text: skelleton
       };
   
       await this.transporter.sendMail(mailOptions);
