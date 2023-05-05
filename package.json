@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest ./test/user/user.spec.ts",
+    "build":"tsc",
     "dev": "nodemon ./src/infraestructure/app.ts"
   },
   "keywords": [],
