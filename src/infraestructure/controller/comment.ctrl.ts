@@ -18,6 +18,7 @@ export class CommentController{
 
     public async getCommentPublicationByIdPagCtrl({params}:Request,res:Response){
         const {uuidPublication='',numPage}=params;
+        console.log(params);
         const response=await this.commentUseCase.getCommentPublicationByIdPag(uuidPublication, numPage);
         const data=response ? response:"NOT_FOUND";
         res.send(data);
@@ -30,7 +31,6 @@ export class CommentController{
 
     public async responseCommentCtrl({params,body}:Request,res:Response){
         const{uuid=''}=params;
-        const {idUserComment,idPublicationComment,textComment,likesComment,responseComment}=body;
         const response=await this.commentUseCase.responseComment(uuid,body);
         const data=response ? response:"NOT_FOUND";
         res.send(data);

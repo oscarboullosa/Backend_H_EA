@@ -9,16 +9,16 @@ const publicationRepo=new MongoPublicationRepository();
 const publicationUseCase = new PublicationUseCase(publicationRepo);
 const publicationCtrl = new PublicationController(publicationUseCase);
 
-routePublication.get("/publication/:uuid",publicationCtrl.getPublicationByIdCtrl);
-routePublication.get("/publications/all",publicationCtrl.listPublicationCtrl);
-routePublication.get("/publication/all/:numPage",publicationCtrl.listPublicationCtrl);
-routePublication.get("/publication/all/count/docs",publicationCtrl.getNumPublicationsCtrl);
+routePublication.get("/publication/:uuid",publicationCtrl.getPublicationByIdCtrl);//Ok
+routePublication.get("/publications/all",publicationCtrl.listPublicationCtrl);//Ok
+routePublication.get("/publication/all/:numPage",publicationCtrl.listPublicationCtrl);//Ok
+routePublication.get("/publication/all/count/docs",publicationCtrl.getNumPublicationsCtrl);//Ok
 
-routePublication.put("/publication/:uuid",publicationCtrl.updatePublicationCtrl);
-routePublication.put("/publication/parameter/like",publicationCtrl.updateLikesCtrl);
+routePublication.put("/publication/:uuid",publicationCtrl.updatePublicationCtrl);//Ok
+routePublication.put("/publication/parameter/like",publicationCtrl.updateLikesCtrl);//Ok
 
-routePublication.delete("/publication/:uuid",publicationCtrl.deletePublicationCtrl);
+routePublication.delete("/publication/:uuid",publicationCtrl.deletePublicationCtrl);//Ok
 
-routePublication.post("/publication",publicationCtrl.insertPublicationCtrl);
+routePublication.post("/publication",publicationCtrl.insertPublicationCtrl);//Ok
 
 export default routePublication;

@@ -3,7 +3,7 @@ import { CommentEntity } from "./comment.entity";
 export class CommentValue implements CommentEntity{
     uuid:string;
     idUserComment: string;
-    idPublicationComment?: string;
+    idPublicationComment: string;
     textComment: string;
     likesComment?: [string];
     responseComment?: [string];

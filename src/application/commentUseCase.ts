@@ -74,7 +74,7 @@ export class CommentUseCase{
     }
 
     public getCommentPublicationByIdPag=async(uuidPublication:string,numPage:string)=>{
-        const comment=await this.commentRepository.updateLikes(uuidPublication,numPage);
+        const comment=await this.commentRepository.getCommentPublicationByIdPag(uuidPublication,numPage);
         return comment;
     }
 

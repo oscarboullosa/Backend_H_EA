@@ -21,7 +21,7 @@ routeUser.put("/user/:uuid",userCtrl.updateUserCtrl);
 
 routeUser.post('/user/follower', userCtrl.insertFollowerCtrl);
 routeUser.post('/user/followed', userCtrl.insertFollowedCtrl);
-routeUser.post('/user/register',userCtrl.registerUserCtrl);
+routeUser.post('/user/register',userCtrl.registerUserCtrl);//ok
 routeUser.post('/user/login',userCtrl.loginUserCtrl);
 
 routeUser.delete("/user/:uuid",userCtrl.deleteUserCtrl);

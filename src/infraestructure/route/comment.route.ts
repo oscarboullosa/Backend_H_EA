@@ -9,20 +9,21 @@ const commentRepo=new MongoCommentRepository();
 const commentUseCase = new CommentUseCase(commentRepo)
 const commentCtrl = new CommentController(commentUseCase)
 
-routeComment.get("/comment/:uuidPublication/:numPage",commentCtrl.getCommentPublicationByIdPagCtrl);
-routeComment.get("/comment/response/:uuid",commentCtrl.responseCommentCtrl);
-routeComment.get("/comments/all",commentCtrl.listCommentCtrl);
-routeComment.get("/comment/comment/:uuid",commentCtrl.getCommentByIdCtrl);
-routeComment.get("/comment/paginated/:numPage",commentCtrl.listCommentPagCtrl);
-routeComment.get("/commentresponses/:uuid/:numPage",commentCtrl.listResponsesPagCtrl);
-routeComment.get("/comment/number",commentCtrl.getNumCommentsCtrl);
+routeComment.get("/comment/publication/by/paginated/:uuidPublication/:numPage",commentCtrl.getCommentPublicationByIdPagCtrl);//Ok
+routeComment.get("/comment/response/:uuid",commentCtrl.responseCommentCtrl);//OK
+routeComment.get("/comments/all",commentCtrl.listCommentCtrl);//OK
+routeComment.get("/comment/comment/id/:uuid",commentCtrl.getCommentByIdCtrl);//Ok
+routeComment.get("/comment/paginated/page/num/:numPage",commentCtrl.listCommentPagCtrl);//Ok
+routeComment.get("/commentresponses/list/responses/:uuid/:numPage",commentCtrl.listResponsesPagCtrl);//Ok
+routeComment.get("/comment/number",commentCtrl.getNumCommentsCtrl);//ok
 
 
-routeComment.post("/comment/add",commentCtrl.insertCommentPublicationCtrl);
+routeComment.post("/comment/add",commentCtrl.insertCommentPublicationCtrl);//OK
+routeComment.post("/comment/response/:uuid",commentCtrl.responseCommentCtrl);//To fix
 
-routeComment.put("/comment/:uuid",commentCtrl.updateCommentPublicationCtrl);
-routeComment.put("/comment/likes/:uuid/:uuidUser",commentCtrl.updateLikesCtrl);
+routeComment.put("/comment/:uuid",commentCtrl.updateCommentPublicationCtrl);//Ok
+routeComment.put("/comment/likes/:uuid/:uuidUser",commentCtrl.updateLikesCtrl);//ok
 
-routeComment.delete("/comment/:uuid",commentCtrl.deleteCommentPublicationCtrl);
+routeComment.delete("/comment/:uuid",commentCtrl.deleteCommentPublicationCtrl);//Ok
 
 export default routeComment;
