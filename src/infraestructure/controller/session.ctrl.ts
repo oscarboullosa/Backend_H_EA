@@ -37,7 +37,7 @@ const checkJwt = (req: RequestExt, res: Response, next: NextFunction) => {
     const isUser = verifyToken(`${jwt}`) as { id: string, roleUser: string };
     if (!isUser) {
       res.status(401);
-      res.send("INVALID_JWT");
+      res.send("NO_TIENES_UN_JWT_VALIDO");
     } else {
       req.user = isUser;
       next();
@@ -45,7 +45,7 @@ const checkJwt = (req: RequestExt, res: Response, next: NextFunction) => {
   } catch (e) {
     console.log({ e });
     res.status(400);
-    res.send("INVALID_SESSION");
+    res.send("SESIÓN_NO_VÁLIDA");
   }
 };
 
