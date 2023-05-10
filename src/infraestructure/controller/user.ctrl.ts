@@ -51,9 +51,10 @@ export class UserController{
 
     public async registerUserCtrl({body}:Request,res:Response){
         const response = await this.userUseCase.registerUser(body);
-        const user = response as UserAuthEntity;
+        res.send(response);
+        //const user = response as UserAuthEntity;
 
-        const sender = 'grupo3ea.eetac@gmail.com';
+        /*const sender = 'grupo3ea.eetac@gmail.com';
         const recipient = user.mailUser;
         const subject = 'Bienvenido a mi aplicación';
         const skelleton = 'Hola ' + user.nameUser + ',\n\nBienvenido a mi aplicación. ¡Gracias por registrarte!';
@@ -63,9 +64,9 @@ export class UserController{
         console.log('Correo electrónico enviado a ' + recipient);
         } catch (err) {
         console.error('Error al enviar el correo electrónico', err);
-        }
+        }*/
 
-        res.send(response);
+        //res.send(response);
 
     }
 

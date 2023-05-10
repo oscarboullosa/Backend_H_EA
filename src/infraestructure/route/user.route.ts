@@ -12,7 +12,7 @@ const userUseCase = new UserUseCase(userRepo)
 const userCtrl = new UserController(userUseCase)
 
 routeUser.get("/user/:uuid",checkJwt,userCtrl.getUserByIdCtrl);//ok
-routeUser.get("/users/all",checkJwt,logMiddleware,userCtrl.listUserCtrl);//OK
+routeUser.get("/users/all",checkJwt,userCtrl.listUserCtrl);//OK logMiddleware
 routeUser.get("/user/all/:numPage",checkJwt,userCtrl.listUserPagCtrl);//ok
 routeUser.get("/user/all/count/docs",checkJwt,userCtrl.getNumUsersCtrl);
 routeUser.get("/user/follower/:uuid/:numPage", checkJwt,userCtrl.listFollowersPagCtrl);//ok
