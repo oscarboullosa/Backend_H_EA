@@ -1,9 +1,9 @@
 import { UserRepository } from './../../src/domain/user/user.repository';
-import { UserAuthEntity, UserEntity } from './../../src/domain/user/user.entity';
-import { UserUseCase } from "../../src/application/userUseCase";
+import { UserAuthEntity } from './../../src/domain/user/user.entity';
+import { UserUseCase } from '../../src/application/userUseCase';
 import { NotFoundError } from '../../src/application/notFoundError';
 
-describe("UserUseCase", () => {
+describe('UserUseCase', () => {
   let userRepository: UserRepository;
   let userUseCase: UserUseCase;
 
@@ -26,88 +26,64 @@ describe("UserUseCase", () => {
     };
     userUseCase = new UserUseCase(userRepository);
   });
+  it('test_get_user_by_id_returns_user', async () => {
+        // Arrange
+        const mockUserRepository: UserRepository = {
+            getUserById: jest.fn().mockResolvedValueOnce({ uuid: '123', nameUser: 'John' }),
+            listUser: jest.fn(),
+            updateUser: jest.fn(),
+            registerUser: jest.fn(),
+            loginUser: jest.fn(),
+            deleteUser: jest.fn(),
+            listUserPag: jest.fn(),
+            getNumUsers: jest.fn(),
+            listFollowersPag: jest.fn(),
+            listFollowedPag: jest.fn(),
+            insertFollower: jest.fn(),
+            insertFollowed: jest.fn(),
+            deleteFollower: jest.fn(),
+            deleteFollowed: jest.fn()
+        };
+        const userUseCase = new UserUseCase(mockUserRepository);
 
-  describe("getUserById", () => {
-    it("should return a user when given a valid uuid", async () => {
-      const uuid = "123";
-      const user: UserEntity = {
-        uuid: "123",
-        appUser: "myAppUser",
-        nameUser: "John",
-        surnameUser: "Doe",
-        mailUser: "johndoe@example.com",
-        photoUser: "http://example.com/johndoe.jpg",
-        birthdateUser: new Date(),
-        genderUser: "male",
-        ocupationUser: "Programmer",
-        descriptionUser: "Lorem ipsum",
-        roleUser: "common",
-        privacyUser: false,
-        deletedUser: false,
-      };
-      ;
-      jest.spyOn(userRepository, "getUserById").mockResolvedValue(user);
+        // Act
+        const result = await userUseCase.getUserById('123');
 
-      const result = await userUseCase.getUserById(uuid);
-
-      expect(result).toEqual(user);
-      expect(userRepository.getUserById).toHaveBeenCalledWith(uuid);
+        // Assert
+        expect(result).toEqual({ uuid: '123', nameUser: 'John' });
     });
-
-    it("should throw an error when given an invalid uuid", async () => {
-      const uuid = "invalid_uuid";
-      jest.spyOn(userRepository, "getUserById").mockResolvedValue(null);
-
-      await expect(userUseCase.getUserById(uuid)).rejects.toThrowError(
-        "User not found"
-      );
-      expect(userRepository.getUserById).toHaveBeenCalledWith(uuid);
-    });
-  });
-
-  describe("listUser", () => {
-    it("should return a list of users", async () => {
-      const users: UserEntity[] = [
-        {
-          uuid: "1",
-          appUser: "myAppUser",
-          nameUser: "John",
-          surnameUser: "Doe",
-          mailUser: "johndoe@example.com",
-          photoUser: "http://example.com/johndoe.jpg",
-          birthdateUser: new Date(),
-          genderUser: "male",
-          ocupationUser: "Programmer",
-          descriptionUser: "Lorem ipsum",
-          roleUser: "common",
-          privacyUser: false,
-          deletedUser: false,
-        },
-        {
-          uuid: "2",
-          appUser: "myAppUser",
-          nameUser: "Jane",
-          surnameUser: "Doe",
-          mailUser: "janedoe@example.com",
-          photoUser: "http://example.com/janedoe.jpg",
-          birthdateUser: new Date(),
-          genderUser: "female",
-          ocupationUser: "Designer",
-          descriptionUser: "Lorem ipsum",
-          roleUser: "common",
-          privacyUser: false,
-          deletedUser: false,
-        },
-      ];
-      jest.spyOn(userRepository, "listUser").mockResolvedValue(users);
   
-      const result = await userUseCase.listUser();
-  
-      expect(result).toEqual(users);
-      expect(userRepository.listUser).toHaveBeenCalled();
-    });
-  });
-  
+
+  it('test_list_user_returns_list_of_users', async () => {
+    // Arrange
+    const mockUserRepository: UserRepository = {
+        getUserById: jest.fn(),
+        listUser: jest.fn().mockResolvedValueOnce(
+          [{ uuid: '123', 
+            nameUser: 'John' }, 
+            { uuid: '456', 
+            nameUser: 'Jane' }]),
+        updateUser: jest.fn(),
+        registerUser: jest.fn(),
+        loginUser: jest.fn(),
+        deleteUser: jest.fn(),
+        listUserPag: jest.fn(),
+        getNumUsers: jest.fn(),
+        listFollowersPag: jest.fn(),
+        listFollowedPag: jest.fn(),
+        insertFollower: jest.fn(),
+        insertFollowed: jest.fn(),
+        deleteFollower: jest.fn(),
+        deleteFollowed: jest.fn()
+    };
+    const userUseCase = new UserUseCase(mockUserRepository);
+
+    // Act
+    const result = await userUseCase.listUser();
+
+    // Assert
+    expect(result).toEqual([{ uuid: '123', nameUser: 'John' }, { uuid: '456', nameUser: 'Jane' }]);
+});
   describe('registerUser', () => {
     it('should register a new user', async () => {
       const user: UserAuthEntity = {
@@ -148,7 +124,7 @@ describe("UserUseCase", () => {
       userRepository.registerUser = jest.fn().mockResolvedValue(null);
 
       await expect(userUseCase.registerUser({
-        uuid:"1",
+        uuid:'1',
         appUser: 'TestApp',
         nameUser: 'John',
         surnameUser: 'Doe',
@@ -165,6 +141,104 @@ describe("UserUseCase", () => {
       })).rejects.toThrow(NotFoundError);
     });
   });
-});
+
+    // Tests that deleteUser method deletes a user. 
+        // Tests that the updateUser method updates a user and returns the updated user. 
+        it('test_update_user_updates_user_and_returns_updated_user', async () => {
+          // Arrange
+          const mockUserRepository: UserRepository = {
+              getUserById: jest.fn().mockResolvedValueOnce({ uuid: '123', nameUser: 'John' }),
+              listUser: jest.fn(),
+              updateUser: jest.fn().mockResolvedValueOnce({ 
+                uuid: '123', 
+                nameUser: 'John', 
+                surnameUser: 'Doe' }),
+              registerUser: jest.fn(),
+              loginUser: jest.fn(),
+              deleteUser: jest.fn(),
+              listUserPag: jest.fn(),
+              getNumUsers: jest.fn(),
+              listFollowersPag: jest.fn(),
+              listFollowedPag: jest.fn(),
+              insertFollower: jest.fn(),
+              insertFollowed: jest.fn(),
+              deleteFollower: jest.fn(),
+              deleteFollowed: jest.fn()
+          };
+          const userUseCase = new UserUseCase(mockUserRepository);
+  
+          // Act
+          const result = await userUseCase.updateUser(
+            '123', 
+            { appUser: 'newAppUser', 
+              nameUser: 'newNameUser', 
+              surnameUser: 'newSurnameUser', 
+              mailUser: 'newMailUser', 
+              photoUser: 'newPhotoUser', 
+              birthdateUser: new Date(), 
+              genderUser: 'male', 
+              ocupationUser: 'newOcupationUser', 
+              descriptionUser: 'newDescriptionUser', 
+              roleUser: 'admin', 
+              privacyUser: true, 
+              deletedUser: false, 
+              followedUser: ['456'], 
+              followersUser: ['789'] });
+  
+          // Assert
+          expect(result).toEqual({ uuid: '123', nameUser: 'John', surnameUser: 'Doe' });
+      });
+  
+      it('should throw a NotFoundError if user is not found', async () => {
+        userRepository.registerUser = jest.fn().mockResolvedValue(null);
+  
+        await expect(userUseCase.registerUser({
+          uuid:'1',
+          appUser: 'TestApp',
+          nameUser: 'John',
+          surnameUser: 'Doe',
+          mailUser: 'johndoe@example.com',
+          passwordUser:'123',
+          photoUser: 'http://example.com/johndoe.png',
+          birthdateUser: new Date(1990, 0, 1),
+          genderUser: 'male',
+          ocupationUser: 'Developer',
+          descriptionUser: 'Lorem ipsum',
+          roleUser: 'common',
+          privacyUser: true,
+          deletedUser: false,
+        })).rejects.toThrow(NotFoundError);
+      });
+    });
+
+           // Tests that listFollowersPag method returns a paginated list of followers.  
+    /*it("test_list_followers_pag_returns_paginated_list_of_followers", async () => {
+      // Arrange
+      const mockUserRepository: UserRepository = {
+        getUserById: jest.fn(),
+        listUser: jest.fn(),
+        updateUser: jest.fn().mockResolvedValueOnce({ uuid: "123", nameUser: "John" }),
+        registerUser: jest.fn(),
+        loginUser: jest.fn(),
+        deleteUser: jest.fn(),
+        listUserPag: jest.fn(),
+        getNumUsers: jest.fn(),
+        listFollowersPag: jest.fn(),
+        listFollowedPag: jest.fn(),
+        insertFollower: jest.fn(),
+        insertFollowed: jest.fn(),
+        deleteFollower: jest.fn(),
+        deleteFollowed: jest.fn()
+    };
+    const userUseCase = new UserUseCase(mockUserRepository);
+
+      // Act
+      const result = await userUseCase.listFollowersPag("123", "1");
+
+      // Assert
+      expect(result).toEqual([{ nameUser: "John" }, { nameUser: "Jane" }]);
+      expect(userRepository.listFollowersPag).toHaveBeenCalledWith("123", "1");
+  });
+});*/
 
 

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.12% </span>
+                <span class="strong">56.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>51/96</span>
+                <span class='fraction'>54/96</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">69.23% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/10</span>
+                <span class='fraction'>9/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.66% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/15</span>
+                <span class='fraction'>5/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">53.12% </span>
+                <span class="strong">56.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>51/96</span>
+                <span class='fraction'>54/96</span>
             </div>
         
             
@@ -166,36 +166,36 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -262,9 +262,9 @@ export class UserUseCase{
 &nbsp;
     public getUserById=async(uuid:string)=&gt;{
         const user = await this.userRepository.getUserById(uuid);
-        if (!user) {
-            throw new NotFoundError("User not found");
-        }
+        if (!user) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
+<span class="cstat-no" title="statement not covered" >            throw new NotFoundError("User not found");</span>
+<span class="cstat-no" title="statement not covered" >        }</span>
         return user;
     }
 &nbsp;
@@ -276,15 +276,15 @@ export class UserUseCase{
         return listUser;
     }
 &nbsp;
-    public updateUser=<span class="fstat-no" title="function not covered" >async(uuid:string,{appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{appUser:string,nameUser:string,surnameUser:string,mailUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=&gt;{</span>
-<span class="cstat-no" title="statement not covered" >        const userValue=new UserValue({uuid,appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});</span>
-<span class="cstat-no" title="statement not covered" >        const user=await this.userRepository.updateUser(uuid,userValue);</span>
-<span class="cstat-no" title="statement not covered" >        if (!user) {</span>
+    public updateUser=async(uuid:string,{appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{appUser:string,nameUser:string,surnameUser:string,mailUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=&gt;{
+        const userValue=new UserValue({uuid,appUser,nameUser,surnameUser,mailUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
+        const user=await this.userRepository.updateUser(uuid,userValue);
+        if (!user) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >            throw new NotFoundError("User not found");</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
-<span class="cstat-no" title="statement not covered" >        return user;</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
+        return user;
+    }
+    
     public registerUser=async({uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}:{uuid:string,appUser:string,nameUser:string,surnameUser:string,mailUser:string,passwordUser:string,photoUser:string,birthdateUser:Date,genderUser:"male" | "female",ocupationUser?: string,descriptionUser: string,roleUser: "admin" | "common" | "verified" | "business",privacyUser: boolean,deletedUser: boolean,followersUser?: [string],followedUser?: [string]})=&gt;{
         const userAuthValue=new UserAuthValue({uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser});
         const user=await this.userRepository.registerUser(userAuthValue);
@@ -355,7 +355,7 @@ export class UserUseCase{
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-01T15:36:26.785Z
+                at 2023-05-11T10:06:52.094Z
             </div>
         <script src="../prettify.js"></script>
         <script>
