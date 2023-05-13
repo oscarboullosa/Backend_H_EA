@@ -4,7 +4,7 @@ import { EmailService,NodemailerEmailService } from "../emailSender/emailSender"
 import { UserAuthEntity, UserEntity } from "../../domain/user/user.entity";
 import { cloudinary } from "../utils/cloduinary.handle";
 import { UserAuthValue } from "../../domain/user/user.value";
-import { UploadedFile } from "express-fileupload";
+import { isImageFile } from "../utils/isImage.handle";
 
 
 export class UserController{
@@ -57,37 +57,40 @@ export class UserController{
         const{uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}=req.body;
         try{
             if(req.file){
-                console.log("FILE_YES")
-                const uploadRes = await cloudinary.uploader.upload(req.file.path, {
-                    upload_preset: "photoUser",
-                  });
+                if(isImageFile(req.file)){
+                    console.log("FILE_YES");
+                    const uploadRes = await cloudinary.uploader.upload(req.file.path, {
+                        upload_preset: "photoUser",
+                    });
 
-                if(uploadRes){
-                    const user=new UserAuthValue({
-                        uuid: uuid,
-                        appUser: appUser,
-                        nameUser: nameUser,
-                        surnameUser: surnameUser,
-                        mailUser: mailUser,
-                        passwordUser: passwordUser,
-                        photoUser: uploadRes.secure_url,
-                        birthdateUser: birthdateUser,
-                        genderUser: genderUser,
-                        ocupationUser: ocupationUser,
-                        descriptionUser: descriptionUser,
-                        roleUser: roleUser,
-                        privacyUser: privacyUser,
-                        deletedUser: deletedUser,
-                        followersUser: followersUser,
-                        followedUser: followedUser,
-                    })
-                    console.log("Hey");
-                    const response = await this.userUseCase.registerUser(user);
-                    console.log(response);
-                    res.send(response);
-                    console.log(response);
-                    
+                    if(uploadRes){
+                        const user=new UserAuthValue({
+                            uuid: uuid,
+                            appUser: appUser,
+                            nameUser: nameUser,
+                            surnameUser: surnameUser,
+                            mailUser: mailUser,
+                            passwordUser: passwordUser,
+                            photoUser: uploadRes.secure_url,
+                            birthdateUser: birthdateUser,
+                            genderUser: genderUser,
+                            ocupationUser: ocupationUser,
+                            descriptionUser: descriptionUser,
+                            roleUser: roleUser,
+                            privacyUser: privacyUser,
+                            deletedUser: deletedUser,
+                            followersUser: followersUser,
+                            followedUser: followedUser,
+                        })
+                        console.log("Hey");
+                        const response = await this.userUseCase.registerUser(user);
+                        console.log(response);
+                        res.send(response);
+                        console.log(response);
+                        
+                    }
                 }
+                else{res.send("NOT_SENDING_AN_IMAGE")}
             }
             else{
                 console.log("How")
