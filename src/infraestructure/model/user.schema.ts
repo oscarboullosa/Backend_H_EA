@@ -33,7 +33,7 @@ const UserSchema = new Schema(
         },
         photoUser:{
             type: String,
-            required: true,
+            required: false,
         },
         birthdateUser:{
             type: Schema.Types.Date,

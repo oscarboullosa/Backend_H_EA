@@ -8,11 +8,28 @@ import routeComment from "./route/comment.route";
 import routePublication from "./route/publication.route"
 import routeActivity from "./route/activity.route";
 import routeApplication from "./route/application.route";
+import multer from "multer";
+import path from "path";
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 const port = process.env.PORT || 3001;
+
+/*const storage = multer.diskStorage({
+    destination: path.join(__dirname, "uploads"),
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+      cb(null, file.fieldname + "-" + uniqueSuffix + path.extname(file.originalname));
+    },
+});*/
+
+const upload = multer({ 
+  storage: multer.memoryStorage() 
+});
+
+app.use(upload.single("photoUser"));
 
 app.use(routeUser);
 app.use(routeLocation);

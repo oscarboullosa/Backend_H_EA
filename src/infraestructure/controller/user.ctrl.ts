@@ -2,6 +2,9 @@ import { UserUseCase } from "../../application/userUseCase";
 import { Request,Response } from "express";
 import { EmailService,NodemailerEmailService } from "../emailSender/emailSender";
 import { UserAuthEntity, UserEntity } from "../../domain/user/user.entity";
+import { cloudinary } from "../utils/cloduinary.handle";
+import { UserAuthValue } from "../../domain/user/user.value";
+import { UploadedFile } from "express-fileupload";
 
 
 export class UserController{
@@ -49,9 +52,50 @@ export class UserController{
         res.send(response);
     }*/
 
-    public async registerUserCtrl({body}:Request,res:Response){
-        const response = await this.userUseCase.registerUser(body);
-        res.send(response);
+    public async registerUserCtrl(req:Request,res:Response){
+
+        const{uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}=req.body;
+        try{
+            if(req.file){
+                console.log("FILE_YES")
+                const uploadRes = await cloudinary.uploader.upload(req.file.path, {
+                    upload_preset: "photoUser",
+                  });
+
+                if(uploadRes){
+                    const user=new UserAuthValue({
+                        uuid: uuid,
+                        appUser: appUser,
+                        nameUser: nameUser,
+                        surnameUser: surnameUser,
+                        mailUser: mailUser,
+                        passwordUser: passwordUser,
+                        photoUser: uploadRes.secure_url,
+                        birthdateUser: birthdateUser,
+                        genderUser: genderUser,
+                        ocupationUser: ocupationUser,
+                        descriptionUser: descriptionUser,
+                        roleUser: roleUser,
+                        privacyUser: privacyUser,
+                        deletedUser: deletedUser,
+                        followersUser: followersUser,
+                        followedUser: followedUser,
+                    })
+                    console.log("Hey");
+                    const response = await this.userUseCase.registerUser(user);
+                    console.log(response);
+                    res.send(response);
+                    console.log(response);
+                    
+                }
+            }
+            else{
+                console.log("How")
+                const response = await this.userUseCase.registerUser(req.body);
+                res.send(response);
+            }
+        }catch(error){}
+
         //const user = response as UserAuthEntity;
 
         /*const sender = 'grupo3ea.eetac@gmail.com';

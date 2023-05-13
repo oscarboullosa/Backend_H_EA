@@ -26,13 +26,16 @@ export class MongoUserRepository implements UserRepository{
     }
 
     async registerUser(data: UserAuthEntity): Promise<any> {
+        console.log("Estoy en mongo")
         const {appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}=data;
         const checkIs = await UserModel.findOne({ mailUser });
         if (checkIs) return "ALREADY_USER";
         const passHash = await encrypt(passwordUser);
         const encryptedData= {appUser,nameUser,surnameUser,mailUser,passwordUser:passHash,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser};
-
+        console.log(encryptedData);
         const user = await UserModel.create(encryptedData);
+        console.log("AtraveseMongo");
+        console.log(user);
         return user;
     }
 
