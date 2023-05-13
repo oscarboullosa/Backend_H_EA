@@ -18,7 +18,7 @@ routePublication.get("/publication/all/count/docs",checkJwt,publicationCtrl.getN
 routePublication.put("/publication/:uuid",checkJwt,publicationCtrl.updatePublicationCtrl);//Ok
 routePublication.put("/publication/parameter/like",checkJwt,publicationCtrl.updateLikesCtrl);//Ok
 
-routePublication.delete("/publication/:uuid",checkJwt,publicationCtrl.deletePublicationCtrl);//Ok
+routePublication.delete("/publication/:uuid",publicationCtrl.deletePublicationCtrl);//Ok
 
 routePublication.post("/publication",checkJwt,publicationCtrl.insertPublicationCtrl);//Ok
 
