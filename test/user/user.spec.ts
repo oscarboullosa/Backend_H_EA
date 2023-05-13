@@ -211,34 +211,4 @@ describe('UserUseCase', () => {
       });
     });
 
-           // Tests that listFollowersPag method returns a paginated list of followers.  
-    /*it("test_list_followers_pag_returns_paginated_list_of_followers", async () => {
-      // Arrange
-      const mockUserRepository: UserRepository = {
-        getUserById: jest.fn(),
-        listUser: jest.fn(),
-        updateUser: jest.fn().mockResolvedValueOnce({ uuid: "123", nameUser: "John" }),
-        registerUser: jest.fn(),
-        loginUser: jest.fn(),
-        deleteUser: jest.fn(),
-        listUserPag: jest.fn(),
-        getNumUsers: jest.fn(),
-        listFollowersPag: jest.fn(),
-        listFollowedPag: jest.fn(),
-        insertFollower: jest.fn(),
-        insertFollowed: jest.fn(),
-        deleteFollower: jest.fn(),
-        deleteFollowed: jest.fn()
-    };
-    const userUseCase = new UserUseCase(mockUserRepository);
-
-      // Act
-      const result = await userUseCase.listFollowersPag("123", "1");
-
-      // Assert
-      expect(result).toEqual([{ nameUser: "John" }, { nameUser: "Jane" }]);
-      expect(userRepository.listFollowersPag).toHaveBeenCalledWith("123", "1");
-  });
-});*/
-
 
