@@ -20,6 +20,6 @@ routePublication.put("/publication/parameter/like",checkJwt,publicationCtrl.upda
 
 routePublication.delete("/publication/:uuid",publicationCtrl.deletePublicationCtrl);//Ok
 
-routePublication.post("/publication",checkJwt,publicationCtrl.insertPublicationCtrl);//Ok
+routePublication.post("/publication",publicationCtrl.insertPublicationCtrl);//Ok
 
 export default routePublication;

@@ -71,32 +71,20 @@ export class PublicationController{
         }catch(error){}
     }
 
-    /*public async deletePublicationCtrl(req:Request,res:Response){
-        const {uuid=''}=req.params;
-        console.log(uuid);
-        const response=await this.publicationUseCase.deletePublication(`${uuid}`);
-        res.send(response);
-    }*/
 
     public async deletePublicationCtrl(req: Request, res: Response) {
         const { uuid = '' } = req.params;
         try {
-          // Obtén la publicación de la base de datos usando el uuid
           const publication = await this.publicationUseCase.getPublicationById(uuid);
       
           if (publication) {
-            // Extrae el ID público de la foto de Cloudinary
             const photoUrl = publication.photoPublication;
-            //const publicId = extractPublicIdFromUrl(photoUrl);
-      
-            // Elimina la foto de Cloudinary
             var i=photoUrl.length;
-            for (let i = 0; i < photoUrl.length; i++) {
-                console.log("destroy");
-                await cloudinary.uploader.destroy(photoUrl[i]);
-              }
-      
-            // Elimina la publicación de la base de datos
+            console.log("destroy");
+            while(i>0){
+                await cloudinary.uploader.destroy(photoUrl);
+                i--;
+            }
             const response = await this.publicationUseCase.deletePublication(uuid);
             res.send(response);
           } else {
@@ -107,9 +95,6 @@ export class PublicationController{
           res.status(500).send("Error al eliminar la publicación");
         }
       }
-
-      
-      
 
     public async listPublicationPagCtrl({params}:Request,res:Response){
         const {numPage=''}=params;
