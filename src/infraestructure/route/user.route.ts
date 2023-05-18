@@ -22,8 +22,8 @@ routeUser.put("/user/:uuid",checkJwt,userCtrl.updateUserCtrl);//ok
 
 routeUser.post('/user/follower',checkJwt ,userCtrl.insertFollowerCtrl);//ok
 routeUser.post('/user/followed',checkJwt, userCtrl.insertFollowedCtrl);//ok
-routeUser.post('/user/register',userCtrl.registerUserCtrl);//ok
-routeUser.post('/user/login',userCtrl.loginUserCtrl);//Ok
+routeUser.post('/user/register',checkJwt,userCtrl.registerUserCtrl);//ok
+routeUser.post('/user/login',checkJwt,userCtrl.loginUserCtrl);//Ok
 
 routeUser.delete("/user/:uuid",checkJwt,userCtrl.deleteUserCtrl);//ok
 routeUser.delete('/user/follower/this',checkJwt, userCtrl.deleteFollowerCtrl);

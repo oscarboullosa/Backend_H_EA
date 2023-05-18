@@ -15,11 +15,11 @@ routePublication.get("/publications/all",checkJwt,publicationCtrl.listPublicatio
 routePublication.get("/publication/all/:numPage",checkJwt,publicationCtrl.listPublicationCtrl);//Ok
 routePublication.get("/publication/all/count/docs",checkJwt,publicationCtrl.getNumPublicationsCtrl);//Ok
 
-routePublication.put("/publication/:uuid",checkJwt,publicationCtrl.updatePublicationCtrl);//Ok
+routePublication.put("/publication/:uuid",publicationCtrl.updatePublicationCtrl);//Ok
 routePublication.put("/publication/parameter/like",checkJwt,publicationCtrl.updateLikesCtrl);//Ok
 
-routePublication.delete("/publication/:uuid",publicationCtrl.deletePublicationCtrl);//Ok
+routePublication.delete("/publication/:uuid",checkJwt,publicationCtrl.deletePublicationCtrl);//Ok
 
-routePublication.post("/publication",publicationCtrl.insertPublicationCtrl);//Ok
+routePublication.post("/publication",checkJwt,publicationCtrl.insertPublicationCtrl);//Ok
 
 export default routePublication;

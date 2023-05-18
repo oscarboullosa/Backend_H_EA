@@ -29,10 +29,43 @@ export class PublicationController{
         res.send({response});
     }
 
-    public async updatePublicationCtrl({params,body}:Request,res:Response){
-        const { uuid = '' } = params;
-        const response=await this.publicationUseCase.updatePublication(`${uuid}`,body);
-        res.send(response);
+    public async updatePublicationCtrl(req:Request,res:Response){
+        const{uuid,idUser,likesPublication,textPublication,photoPublication,commentsPublication}=req.body;
+        try{
+            if(req.file){
+                if(isImageFile(req.file)){
+                    console.log("FILE_YES");
+                    const publicationA=await this.publicationUseCase.getPublicationById(uuid);
+                    console.log("Aqui1")
+                    const uploadResUp = await cloudinary.uploader.upload(req.file.path, {
+                        upload_preset: "publication",
+                    });
+                    const delUp=await cloudinary.uploader.destroy(publicationA.photoPublication);
+                    if(uploadResUp){
+                        const publication=new PublicationValue({
+                            uuid:uuid,
+                            idUser:idUser,
+                            likesPublication:likesPublication,
+                            textPublication:textPublication,
+                            photoPublication:uploadResUp.secure_url,
+                            commentsPublication:commentsPublication,
+                        })
+                        console.log('Hey');
+                        const response=await this.publicationUseCase.updatePublication(uuid,publication);
+                        console.log(response);
+                        res.send(response);
+                        console.log(response);
+                    }
+                }
+                else{res.send("NOT_SENDING_IMAGE")}
+            }
+            else{
+                console.log('How');
+                const response=await this.publicationUseCase.updatePublication(uuid,req.body);
+                res.send(response);
+            }
+        }
+            catch(error){}
     }
 
     public async insertPublicationCtrl(req:Request,res:Response){

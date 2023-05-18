@@ -1,9 +1,10 @@
+import { uploadUser } from './multer/userMulter.ctrl';
 import { UserUseCase } from "../../application/userUseCase";
 import { Request,Response } from "express";
 import { EmailService,NodemailerEmailService } from "../emailSender/emailSender";
 import { UserAuthEntity, UserEntity } from "../../domain/user/user.entity";
 import { cloudinary } from "../utils/cloduinary.handle";
-import { UserAuthValue } from "../../domain/user/user.value";
+import { UserAuthValue, UserValue } from "../../domain/user/user.value";
 import { isImageFile } from "../utils/isImage.handle";
 
 
@@ -41,16 +42,52 @@ export class UserController{
         res.send({response});
     }
 
-    public async updateUserCtrl({params,body}:Request,res:Response){
-        const { uuid = '' } = params;
-        const response=await this.userUseCase.updateUser(`${uuid}`,body);
-        res.send(response);
+    public async updateUserCtrl(req:Request,res:Response){
+        const{uuid,appUser,nameUser,surnameUser,mailUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}=req.body;
+        try{
+            if(req.file){
+                if(isImageFile(req.file)){
+                    console.log("FILE_YES");
+                    const userA=await this.userUseCase.getUserById(uuid);
+                    const uploadResUp = await cloudinary.uploader.upload(req.file.path, {
+                        upload_preset: "photoUser",
+                    });
+                    const delUp=await cloudinary.uploader.destroy(userA.photoUser);
+                    if(uploadResUp){
+                        const user=new UserValue({
+                            uuid: uuid,
+                            appUser: appUser,
+                            nameUser: nameUser,
+                            surnameUser: surnameUser,
+                            mailUser: mailUser,
+                            photoUser: uploadResUp.secure_url,
+                            birthdateUser: birthdateUser,
+                            genderUser: genderUser,
+                            ocupationUser: ocupationUser,
+                            descriptionUser: descriptionUser,
+                            roleUser: roleUser,
+                            privacyUser: privacyUser,
+                            deletedUser: deletedUser,
+                            followersUser: followersUser,
+                            followedUser: followedUser,
+                        })
+                        console.log('Hey');
+                        const response=await this.userUseCase.updateUser(uuid,user);
+                        console.log(response);
+                        res.send(response);
+                        console.log(response);
+                    }
+                }
+                else{res.send("NOT_SENDING_IMAGE")}
+            }
+            else{
+                console.log('How');
+                const response=await this.userUseCase.updateUser(uuid,req.body);
+                res.send(response);
+            }
+        }
+            catch(error){}
     }
-
-    /*public async registerUserCtrl({body}:Request,res:Response){
-        const response = await this.userUseCase.registerUser(body);
-        res.send(response);
-    }*/
 
     public async registerUserCtrl(req:Request,res:Response){
 
