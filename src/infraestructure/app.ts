@@ -18,6 +18,7 @@ app.use(express.json());
 const port = process.env.PORT || 3001;
 
 //app.use(uploadUser.single("photoUser"),routeUser,deleteLocalFileUser as express.RequestHandler);
+app.use(uploadUser.single("photoUser"),routeUser);
 app.use(routeLocation);
 app.use(routeComment);
 app.use(uploadPublication.single("photoPublication"),routePublication,deleteLocalFilePublication as express.RequestHandler);
