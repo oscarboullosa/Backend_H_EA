@@ -22,7 +22,8 @@ export class PublicationUseCase{
     }
 
     public insertPublication=async({uuid,idUser,likesPublication,textPublication,photoPublication,commentsPublication}:{uuid:string,idUser:string,likesPublication?:[string],textPublication?:string,photoPublication:[string],commentsPublication?:[string]})=>{
-        const publicationValue=new PublicationValue({uuid,idUser,likesPublication,textPublication,photoPublication,commentsPublication});
+        const publicationValue:PublicationValue=new PublicationValue({uuid,idUser,likesPublication,textPublication,photoPublication,commentsPublication});
+        console.log("PerroSanxe" + publicationValue);
         const publication=await this.publicationRepository.insertPublication(publicationValue);
         if(!publication){
             throw new NotFoundError("Publication not found");
@@ -37,6 +38,12 @@ export class PublicationUseCase{
 
     public getNumPublications=async()=>{
         const numPublications=await this.publicationRepository.getNumPublications();
+        return numPublications;
+    }
+
+    public getFollowingPost=async(numPage:string, uuid:string)=>{
+        console.log(numPage,uuid);
+        const numPublications=await this.publicationRepository.getFollowingPost(numPage, uuid);
         return numPublications;
     }
 

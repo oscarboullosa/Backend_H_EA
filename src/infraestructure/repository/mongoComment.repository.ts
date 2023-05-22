@@ -8,18 +8,36 @@ export class MongoCommentRepository implements CommentRepository{
     async getCommentPublicationByIdPag(uuidPublication:string,numPage:string):Promise<any>{
         const numCommentsPerPage = 2;
         const hop = (parseInt(numPage) - 1) * numCommentsPerPage;
-        const responseItem = await CommentModel.find({ idPublicationComment:uuidPublication }).skip(hop).limit(numCommentsPerPage).exec();
+        const responseItem = await CommentModel.find({ idPublicationComment:uuidPublication }).skip(hop).limit(numCommentsPerPage).populate("idUserComment").exec();
         return responseItem;
     }
     
     async insertCommentPublication(data:CommentEntity):Promise<any>{
         const responseInsert = await CommentModel.create(data);
+        // Actualizar la propiedad uuid con el valor de response._id
+        const updatedData = {
+            ...data,
+            uuid: responseInsert._id,
+        };
+        
+        // Realizar la actualización en la base de datos
+        const response= await CommentModel.updateOne({ _id: responseInsert._id }, updatedData);
+        console.log(response);
         const responseItem = await PublicationModel.findOneAndUpdate({ _id: data.idPublicationComment }, { $addToSet: { commentsPublication: responseInsert._id } },{new: true});
         return responseItem;
     }
 
     async responseComment(uuid:string,data:CommentEntity):Promise<any>{
         const responseInsert = await CommentModel.create(data);
+        // Actualizar la propiedad uuid con el valor de response._id
+        const updatedData = {
+            ...data,
+            uuid: responseInsert._id,
+        };
+        
+        // Realizar la actualización en la base de datos
+        const response= await CommentModel.updateOne({ _id: responseInsert._id }, updatedData);
+        console.log(response);
         const responseItem = await CommentModel.findOneAndUpdate({ _id: uuid }, { $addToSet: { responseComment: responseInsert._id } },{new: true});
         return responseItem;
     }

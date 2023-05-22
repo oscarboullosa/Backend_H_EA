@@ -5,6 +5,7 @@ export interface PublicationRepository{
     insertPublication(data:PublicationEntity):Promise<PublicationEntity|null>;
     listPublication():Promise<PublicationEntity[]|null>;
     getNumPublications():Promise<String|null>;
+    getFollowingPost(numPage:string, uuid:string):Promise<PublicationEntity[]|null>;
     getPublicationById(uuid:string):Promise<PublicationEntity|null>;
     updatePublication(uuid:string,data:PublicationEntity):Promise<PublicationEntity|null>;
     deletePublication(uuid:string):Promise<PublicationEntity|null>;

@@ -17,9 +17,12 @@ export class UserController{
         this.updateUserCtrl=this.updateUserCtrl.bind(this);
         this.registerUserCtrl=this.registerUserCtrl.bind(this);
         this.loginUserCtrl=this.loginUserCtrl.bind(this);
+        this.loginFrontendUserCtrl=this.loginFrontendUserCtrl.bind(this);
         this.deleteUserCtrl=this.deleteUserCtrl.bind(this);
         this.listUserPagCtrl=this.listUserPagCtrl.bind(this);
         this.getNumUsersCtrl=this.getNumUsersCtrl.bind(this);
+        this.getSearchUsersCtrl=this.getSearchUsersCtrl.bind(this);
+        this.checkFollowerCtrl=this.checkFollowerCtrl.bind(this);
 
         this.listFollowersPagCtrl=this.listFollowersPagCtrl.bind(this);
         this.listFollowedPagCtrl=this.listFollowedPagCtrl.bind(this);
@@ -83,6 +86,7 @@ export class UserController{
             else{
                 console.log('How');
                 const response=await this.userUseCase.updateUser(uuid,req.body);
+                console.log(response);
                 res.send(response);
             }
         }
@@ -159,6 +163,11 @@ export class UserController{
         res.send(response);
     }
 
+    public async loginFrontendUserCtrl({ body }: Request, res: Response){
+        const response=await this.userUseCase.loginFrontendUser(body);
+        res.send(response);
+    }
+
     public async deleteUserCtrl({params}:Request,res:Response){
         const { uuid = '' } = params;
         const response=await this.userUseCase.deleteUser(`${uuid}`);
@@ -177,6 +186,12 @@ export class UserController{
         res.send(data);
     }
     
+    public async getSearchUsersCtrl({params}:Request,res:Response){
+        const { search = '' } = params;
+        const response=await this.userUseCase.getSearchUsers(search); 
+        const data=response ? response:"NOT_FOUND";
+        res.send(data);
+    }
 
     public async listFollowersPagCtrl(req: Request, res: Response){
         const { uuid = '' ,numPage = '' } = req.params;
@@ -187,6 +202,12 @@ export class UserController{
     public async listFollowedPagCtrl(req: Request, res: Response){
         const { uuid = '' ,numPage = '' } = req.params;
         const response = await this.userUseCase.listFollowedPag(`${uuid}`, `${numPage}`);
+        res.send(response);
+    }
+    
+    public async checkFollowerCtrl({params}: Request, res: Response){
+        const { uuid = '' ,uuidFollowed = '' } = params;
+        const response = await this.userUseCase.checkFollower(`${uuid}`, `${uuidFollowed}`);
         res.send(response);
     }
 
@@ -209,8 +230,12 @@ export class UserController{
     }
 
     public async deleteFollowedCtrl({body}:Request,res:Response){
+        console.log(body);
         const{uuid,uuidFollowed}=body;
+        console.log(uuid);
+        console.log(uuidFollowed);
         const response=await this.userUseCase.deleteFollowed(uuid,uuidFollowed);
+        console.log("Ctrl: " + response);
         res.send(response);
     }
 }

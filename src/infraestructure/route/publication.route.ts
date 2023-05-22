@@ -14,6 +14,7 @@ routePublication.get("/publication/:uuid",checkJwt,publicationCtrl.getPublicatio
 routePublication.get("/publications/all",checkJwt,publicationCtrl.listPublicationCtrl);//Ok
 routePublication.get("/publication/all/:numPage",checkJwt,publicationCtrl.listPublicationCtrl);//Ok
 routePublication.get("/publication/all/count/docs",checkJwt,publicationCtrl.getNumPublicationsCtrl);//Ok
+routePublication.get("/publication/followingPost/:numPage/:uuid",checkJwt,publicationCtrl.getFollowingPostCtrl);//Ok
 
 routePublication.put("/publication/:uuid",publicationCtrl.updatePublicationCtrl);//Ok
 routePublication.put("/publication/parameter/like",checkJwt,publicationCtrl.updateLikesCtrl);//Ok

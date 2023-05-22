@@ -13,6 +13,7 @@ export class PublicationController{
         this.deletePublicationCtrl=this.deletePublicationCtrl.bind(this);
         this.listPublicationPagCtrl=this.listPublicationPagCtrl.bind(this);
         this.getNumPublicationsCtrl=this.getNumPublicationsCtrl.bind(this);
+        this.getFollowingPostCtrl=this.getFollowingPostCtrl.bind(this);
         this.updateLikesCtrl=this.updateLikesCtrl.bind(this);
     }
 
@@ -137,6 +138,14 @@ export class PublicationController{
 
     public async getNumPublicationsCtrl(req:Request,res:Response){
         const response=await this.publicationUseCase.getNumPublications();
+        const data=response ? response:"NOT_FOUND";
+        res.send(data);
+    }
+
+    public async getFollowingPostCtrl({params}:Request,res:Response){
+        console.log(params);
+        const {numPage='', uuid=''}=params;
+        const response=await this.publicationUseCase.getFollowingPost(numPage, uuid);
         const data=response ? response:"NOT_FOUND";
         res.send(data);
     }

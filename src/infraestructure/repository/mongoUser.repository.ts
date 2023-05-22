@@ -22,21 +22,26 @@ export class MongoUserRepository implements UserRepository{
 
     async updateUser(uuid:string,data:UserEntity):Promise<any>{
         const response=await UserModel.findOneAndUpdate({_id:uuid},data,{new:true});
+        console.log(response);
         return response;
     }
 
     async registerUser(data: UserAuthEntity): Promise<any> {
         console.log("Estoy en mongo")
-        const {appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}=data;
+        const {uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}=data;
         const checkIs = await UserModel.findOne({ mailUser });
         if (checkIs) return "ALREADY_USER";
         const passHash = await encrypt(passwordUser);
-        const encryptedData= {appUser,nameUser,surnameUser,mailUser,passwordUser:passHash,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser};
+        const encryptedData= {uuid,appUser,nameUser,surnameUser,mailUser,passwordUser:passHash,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser};
         console.log(encryptedData);
         const user = await UserModel.create(encryptedData);
+        console.log("register user " + user);
+        const encryptedUpdate= {uuid:user._id,appUser,nameUser,surnameUser,mailUser,passwordUser:passHash,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser};
+        const response=await UserModel.findOneAndUpdate({_id:encryptedUpdate.uuid},encryptedUpdate,{new:true});
+        console.log("Update user " + response);
         console.log("AtraveseMongo");
-        console.log(user);
-        return user;
+        
+        return response;
     }
 
     async loginUser(data:AuthEntity):Promise<any>{
@@ -44,18 +49,34 @@ export class MongoUserRepository implements UserRepository{
         const checkIs=await UserModel.findOne({mailUser:mailUser});
 
         if (!checkIs) return 'NOT_FOUND_USER';
-  
+
 
         const passwordHash = checkIs.passwordUser; 
         const isCorrect = await verified(passwordUser, passwordHash);
         if (!isCorrect) return "PASSWORD_INCORRECT";
-    
+
         if (checkIs.roleUser!=='admin') return 'USER_NOT_ADMIN';
-  
+
         const token = generateToken(checkIs.mailUser, checkIs.roleUser);
         const item = {token, user: checkIs};
         return item;
-  };
+    };
+
+    async loginFrontendUser(data:AuthEntity):Promise<any>{
+        const{mailUser,passwordUser}=data;
+        const checkIs=await UserModel.findOne({mailUser:mailUser});
+
+        if (!checkIs) return 'NOT_FOUND_USER';
+
+
+        const passwordHash = checkIs.passwordUser; 
+        const isCorrect = await verified(passwordUser, passwordHash);
+        if (!isCorrect) return "PASSWORD_INCORRECT";
+
+        const token = generateToken(checkIs.mailUser, checkIs.roleUser);
+        const item = {token, user: checkIs};
+        return item;
+    };
     
 
     async deleteUser(uuid:string):Promise<any>{
@@ -73,6 +94,19 @@ export class MongoUserRepository implements UserRepository{
     async getNumUsers():Promise<any>{
         const response = (await UserModel.countDocuments({})).toString();
         return response;
+    }
+
+    async getSearchUsers(search:string):Promise<any>{
+        const responseUser = await UserModel.findOne({ appUser: search });
+  
+        const regex = new RegExp(`^${search}`, 'i');
+        const responseItem = await UserModel.find({ appUser: regex }).limit(10);
+
+        if(responseUser){
+            return [responseUser, ...responseItem.slice(0, 9)];
+        }else{
+            return responseItem;
+        }
     }
 
     async listFollowersPag(uuid:string,numPage:string):Promise<any>{
@@ -105,40 +139,83 @@ export class MongoUserRepository implements UserRepository{
         return responseItem;
     }
 
+    async checkFollower(uuid:string, uuidFollowed:string):Promise<any>{
+        
+        const user = await UserModel.findOne({_id: uuid, followedUser: { $in: [uuidFollowed] }});
+        console.log("Estoy en mongoUser repository: " + user);
+        if (!user) {
+        return false;
+        }
+    
+        return true;
+    }
+
     async insertFollower(uuid:string,uuidFollower:string):Promise<any>{
-        const response=await UserModel.findOneAndUpdate(
+
+        const responseItem=await UserModel.findOneAndUpdate(
             {_id:uuid},
             {$addToSet:{followersUser:new Types.ObjectId(uuidFollower)}},
             {new:true}
-        ).populate('followersUser');
-        return response;
+          ).populate('followersUser');
+          const item=await UserModel.findOneAndUpdate(
+            {_id:uuidFollower},
+            {$addToSet:{followedUser:new Types.ObjectId(uuid)}},
+            {new:true}
+          )
+          console.log(responseItem);
+          return responseItem;
     }
 
     async insertFollowed(uuid:string,uuidFollowed:string):Promise<any>{
-        console.log(uuid,uuidFollowed);
-        const response=await UserModel.findOneAndUpdate(
+        const responseItem=await UserModel.findOneAndUpdate(
             {_id:uuid},
             {$addToSet:{followedUser:new Types.ObjectId(uuidFollowed)}},
             {new:true}
-        ).populate('followedUser');
-        return response;
+          ).populate('followedUser');
+          const item=await UserModel.findOneAndUpdate(
+            {_id:uuidFollowed},
+            {$addToSet:{followersUser:new Types.ObjectId(uuid)}},
+            {new:true}
+          )
+          console.log(responseItem);
+          return responseItem;
     }
 
     async deleteFollower(uuid:string,uuidFollower:string):Promise<any>{
-        const response = await UserModel.findOneAndUpdate(
-          {_id:uuid},
-          {$pull: {followersUser: new Types.ObjectId(uuidFollower)}},
-          {new: true}
-        );
-        return response;
+        console.log("removeFOllower!!!");
+        const responseItem = await UserModel.findOneAndUpdate(
+            {_id: uuid},
+            {$pull: {followersUser: new Types.ObjectId(uuidFollower)}},
+            {new: true}
+        ).then((data)=>console.log("resposta:",data));
+        /* console.log(responseItem);
+        if (!responseItem) {
+            throw new Error('User not found');
+        }*/
+        
+        return responseItem;
     }
 
     async deleteFollowed(uuid:string,uuidFollowed:string):Promise<any>{
-        const response = await UserModel.findOneAndUpdate(
-          {_id:uuid},
-          {$pull: {followedUser: new Types.ObjectId(uuidFollowed)}},
-          {new: true}
-        );
-        return response;
+        console.log("Entramos al servicio");
+        console.log(uuidFollowed);
+        const responseItem = await UserModel.findOneAndUpdate(
+            {_id: uuid},
+            {$pull: {followedUser: new Types.ObjectId(uuidFollowed)}},
+            {new: true}
+          ).populate('followedUser');
+          if (!responseItem) {
+            throw new Error('User not found');
+          }
+        const item = await UserModel.findOneAndUpdate(
+            {_id: uuidFollowed},
+            {$pull: {followersUser: new Types.ObjectId(uuid)}},
+            {new: true}
+            )
+            if (!item) {
+                throw new Error('User not found');
+            }
+        console.log("Respuesta del que pierde un follower:" + item);
+        return responseItem;
     }
 }
