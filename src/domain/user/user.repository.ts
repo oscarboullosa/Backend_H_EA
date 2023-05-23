@@ -4,7 +4,7 @@ export interface UserRepository{
     getUserById(uuid:string):Promise<UserEntity|null>;
     listUser():Promise<UserEntity[]|null>;
     updateUser(uuid:string,data:UserEntity):Promise<UserEntity|null>;
-    registerUser(data:UserAuthEntity):Promise<UserAuthEntity|null>;
+    registerUser(data:UserAuthEntity):Promise<UserAuthEntity|null|string>;
     loginUser(data:AuthEntity):Promise<string[2]|null>;
     loginFrontendUser(data:AuthEntity):Promise<String[2]|null>;
     deleteUser(uuid:string):Promise<UserEntity|null>;

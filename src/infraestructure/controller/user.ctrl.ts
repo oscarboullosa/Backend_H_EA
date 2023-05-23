@@ -135,8 +135,13 @@ export class UserController{
             }
             else{
                 console.log("How")
-                const response = await this.userUseCase.registerUser(req.body);
-                res.send(response);
+                const responseUser = await this.userUseCase.registerUser(req.body);
+                if (responseUser === "ALREADY_USER") {
+                    res.status(403);
+                    res.send(responseUser);
+                    console.log(res.status);
+                }
+                else {res.send(responseUser);}
             }
         }catch(error){}
 
@@ -159,13 +164,38 @@ export class UserController{
     }
 
     public async loginUserCtrl({ body }: Request, res: Response){
-        const response=await this.userUseCase.loginUser(body);
-        res.send(response);
+        const responseUser=await this.userUseCase.loginUser(body);
+        
+        if (responseUser === "PASSWORD_INCORRECT") {
+            res.status(403);
+            res.send(responseUser);
+            console.log(res.status);
+        } else if (responseUser === "USER_NOT_ADMIN") {
+            res.status(406);
+            res.send(responseUser);
+        } else if (responseUser === "NOT_FOUND_USER") {
+            res.status(404);
+            res.send(responseUser);
+            console.log("not found user " + res.status);
+        } else {
+            res.send(responseUser);
+        }
     }
 
     public async loginFrontendUserCtrl({ body }: Request, res: Response){
-        const response=await this.userUseCase.loginFrontendUser(body);
-        res.send(response);
+        const responseUser=await this.userUseCase.loginFrontendUser(body);
+        
+        if (responseUser === "PASSWORD_INCORRECT") {
+            res.status(403);
+            res.send(responseUser);
+            console.log(res.status);
+        } else if (responseUser === "NOT_FOUND_USER") {
+            res.status(404);
+            res.send(responseUser);
+            console.log("not found user " + res.status);
+        } else {
+            res.send(responseUser);
+        }
     }
 
     public async deleteUserCtrl({params}:Request,res:Response){
