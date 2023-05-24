@@ -12,7 +12,7 @@ const publicationCtrl = new PublicationController(publicationUseCase);
 
 routePublication.get("/publication/:uuid",checkJwt,publicationCtrl.getPublicationByIdCtrl);//Ok
 routePublication.get("/publications/all",checkJwt,publicationCtrl.listPublicationCtrl);//Ok
-routePublication.get("/publication/all/:numPage",checkJwt,publicationCtrl.listPublicationCtrl);//Ok
+routePublication.get("/publication/all/:numPage",checkJwt,publicationCtrl.listPublicationPagCtrl);//Ok
 routePublication.get("/publication/all/count/docs",checkJwt,publicationCtrl.getNumPublicationsCtrl);//Ok
 routePublication.get("/publication/followingPost/:numPage/:uuid",checkJwt,publicationCtrl.getFollowingPostCtrl);//Ok
 
