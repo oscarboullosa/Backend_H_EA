@@ -21,13 +21,13 @@ export class PublicationController{
         const { uuid = '' } = params;
         console.log(params);
         const response=await this.publicationUseCase.getPublicationById(`${uuid}`);
-        res.send({response})
+        res.send(response)
     }
 
     public async listPublicationCtrl(req:Request,res:Response){
         const response=await this.publicationUseCase.listPublication();
         console.log(response);
-        res.send({response});
+        res.send(response);
     }
 
     public async updatePublicationCtrl(req:Request,res:Response){

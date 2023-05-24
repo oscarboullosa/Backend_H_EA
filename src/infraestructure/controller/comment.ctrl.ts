@@ -22,7 +22,7 @@ export class CommentController{
         const response=await this.commentUseCase.getCommentPublicationByIdPag(uuidPublication, numPage);
         const data=response ? response:"NOT_FOUND";
         res.send(data);
-        }
+    }
 
     public async insertCommentPublicationCtrl({body}:Request,res:Response){
         const response=await this.commentUseCase.insertCommentPublication(body);

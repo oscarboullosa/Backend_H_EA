@@ -36,13 +36,13 @@ export class UserController{
         const { uuid = '' } = params;
         console.log(params);
         const response=await this.userUseCase.getUserById(`${uuid}`);
-        res.send({response})
+        res.send(response)
     }
 
     public async listUserCtrl(req:Request,res:Response){
         const response=await this.userUseCase.listUser();
         console.log(response);
-        res.send({response});
+        res.send(response);
     }
 
     public async updateUserCtrl(req:Request,res:Response){

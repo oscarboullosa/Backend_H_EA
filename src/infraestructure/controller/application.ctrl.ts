@@ -16,12 +16,12 @@ export class ApplicationController{
     public async getApplicationByIdCtrl({params}:Request,res:Response){
         const { uuid = '' } = params;
         const response=await this.applicationUseCase.getApplicationById(`${uuid}`);
-        res.send({response})
+        res.send(response)
     }
 
     public async listApplicationCtrl(req:Request,res:Response){
         const response=await this.applicationUseCase.listApplication();
-        res.send({response});
+        res.send(response);
     }
 
     public async updateApplicationCtrl({params,body}:Request,res:Response){

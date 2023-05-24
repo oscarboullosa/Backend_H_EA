@@ -16,12 +16,12 @@ export class ActivityController{
     public async getActivityByIdCtrl({params}:Request,res:Response){
         const { uuid = '' } = params;
         const response=await this.activityUseCase.getActivityById(`${uuid}`);
-        res.send({response})
+        res.send(response)
     }
 
     public async listActivityCtrl(req:Request,res:Response){
         const response=await this.activityUseCase.listActivity();
-        res.send({response});
+        res.send(response);
     }
 
     public async updateActivityCtrl({params,body}:Request,res:Response){
