@@ -67,6 +67,12 @@ export class MongoPublicationRepository implements PublicationRepository{
         if(!idsFollowedUsers || idsFollowedUsers.length === 0){
         return [];
         }
+        /* PUBLICACIONES 24 HORAS
+        const publications = await PublicationModel..find({
+            idUser: { $in: idsFollowedUsers },
+            createdAt: { $gte: twentyFourHoursAgo },
+        }).sort({ createdAt: -1 }).skip(jump).limit(publicationsByPage).populate("idUser").exec();
+        */
         
         const publicationsByPage = 3;
         // Obtener las publicaciones de los usuarios seguidos
@@ -74,6 +80,30 @@ export class MongoPublicationRepository implements PublicationRepository{
         const publications = await PublicationModel.find({ idUser: { $in: idsFollowedUsers } }).sort({ createdAt: -1 }).skip(jump).limit(publicationsByPage).populate("idUser").exec();
         console.log(publications);
         return publications;
+    }
+
+    async getNumFollowingPost(uuid:string): Promise<any> {
+        // Obtener los IDs de los usuarios seguidos
+        const user = await UserModel.findById({_id:uuid}).exec();
+        console.log(user);
+        const idsFollowedUsers = user?.followedUser;
+        if(!idsFollowedUsers || idsFollowedUsers.length === 0){
+        return [];
+        }
+        //NUM PUBLICACIONES 24 HORAS
+        //const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+        
+        // Obtener las publicaciones de los usuarios seguidos
+        /*
+        const publications = await PublicationModel.find({
+            idUser: { $in: idsFollowedUsers },
+            createdAt: { $gte: twentyFourHoursAgo },
+          }).sort({ createdAt: -1 }).exec();
+        console.log(publications);
+        */
+        const publications = await PublicationModel.find({ idUser: { $in: idsFollowedUsers } }).sort({ createdAt: -1 }).exec();
+        console.log(publications);
+        return (publications.length).toString();;
     }
 
     async updateLikes(uuid: string, uuidUser: string): Promise<any> {

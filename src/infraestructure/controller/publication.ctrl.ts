@@ -14,7 +14,9 @@ export class PublicationController{
         this.listPublicationPagCtrl=this.listPublicationPagCtrl.bind(this);
         this.getNumPublicationsCtrl=this.getNumPublicationsCtrl.bind(this);
         this.getFollowingPostCtrl=this.getFollowingPostCtrl.bind(this);
+        this.getNumFollowingPostCtrl=this.getNumFollowingPostCtrl.bind(this);
         this.updateLikesCtrl=this.updateLikesCtrl.bind(this);
+        
     }
 
     public async getPublicationByIdCtrl({params}:Request,res:Response){
@@ -146,6 +148,14 @@ export class PublicationController{
         console.log(params);
         const {numPage='', uuid=''}=params;
         const response=await this.publicationUseCase.getFollowingPost(numPage, uuid);
+        const data=response ? response:"NOT_FOUND";
+        res.send(data);
+    }
+    
+    public async getNumFollowingPostCtrl({params}:Request,res:Response){
+        console.log(params);
+        const {uuid=''}=params;
+        const response=await this.publicationUseCase.getNumFollowingPost(uuid);
         const data=response ? response:"NOT_FOUND";
         res.send(data);
     }

@@ -46,6 +46,12 @@ export class PublicationUseCase{
         const numPublications=await this.publicationRepository.getFollowingPost(numPage, uuid);
         return numPublications;
     }
+    
+    public getNumFollowingPost=async( uuid:string)=>{
+        console.log(uuid);
+        const numPublications=await this.publicationRepository.getNumFollowingPost(uuid);
+        return numPublications;
+    }
 
     public listPublicationsPag=async(numPage:string)=>{
         const listPublication=await this.publicationRepository.listPublicationsPag(numPage);
