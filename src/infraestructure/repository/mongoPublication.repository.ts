@@ -106,6 +106,27 @@ export class MongoPublicationRepository implements PublicationRepository{
         return (publications.length).toString();;
     }
 
+    async getLikes(uuid:string, numPage:string): Promise<any> {
+        const itemsPerPage = 2;
+        const pageNum = parseInt(numPage, 10);
+        const skipItems = (pageNum - 1) * itemsPerPage;
+
+        const publication = await PublicationModel.findById(uuid)
+        .populate({
+            path: 'likesPublication',
+            options: {
+            skip: skipItems,
+            limit: itemsPerPage,
+            },
+        })
+        .exec();
+
+        return publication;
+
+    }
+
+    
+
     async updateLikes(uuid: string, uuidUser: string): Promise<any> {
         const responseItem = await PublicationModel.findOneAndUpdate(
             {_id: uuid}, 
