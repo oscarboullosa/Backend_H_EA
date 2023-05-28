@@ -59,4 +59,14 @@ export class ActivityUseCase{
         return participants;
     }
 
+    public getActivitiesByUserAndWeek=async(uuid: string, startDate: Date)=>{
+        const activities=await this.activityRepository.getActivitiesByUserAndWeek(uuid,startDate);
+        return activities;
+    }
+
+    public getFollowedUsersActivities=async(uuid: string, page: string, startDate: Date)=>{
+        const activities=await this.activityRepository.getFollowedUsersActivities(uuid,page,startDate);
+        return activities;
+    }
+
 }
