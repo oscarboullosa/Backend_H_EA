@@ -21,6 +21,7 @@ routePublication.get("/publication/likes/:uuid/:numPage",checkJwt,publicationCtr
 
 routePublication.put("/publication/:uuid",publicationCtrl.updatePublicationCtrl);//Ok
 routePublication.put("/publication/parameter/like",checkJwt,publicationCtrl.updateLikesCtrl);//Ok
+routePublication.put("/publication/delete/like",checkJwt,publicationCtrl.deleteLikesCtrl);//Ok
 
 routePublication.delete("/publication/:uuid",checkJwt,publicationCtrl.deletePublicationCtrl);//Ok
 

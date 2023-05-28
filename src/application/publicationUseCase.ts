@@ -68,6 +68,11 @@ export class PublicationUseCase{
         const publication=await this.publicationRepository.updateLikes(uuid,uuidUser);
         return publication;
     }
+    
+    public deleteLikes=async(uuid:string,uuidUser:string)=>{
+        const publication=await this.publicationRepository.deleteLikes(uuid,uuidUser);
+        return publication;
+    }
 
     public listPublication=async()=>{
         const listPublication=await this.publicationRepository.listPublication();

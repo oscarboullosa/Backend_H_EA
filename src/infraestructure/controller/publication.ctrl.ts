@@ -17,6 +17,7 @@ export class PublicationController{
         this.getLikesCtrl=this.getLikesCtrl.bind(this);
         this.getNumFollowingPostCtrl=this.getNumFollowingPostCtrl.bind(this);
         this.updateLikesCtrl=this.updateLikesCtrl.bind(this);
+        this.deleteLikesCtrl=this. deleteLikesCtrl.bind(this);
         
     }
 
@@ -172,6 +173,13 @@ export class PublicationController{
     public async updateLikesCtrl({body}:Request,res:Response){
         const {uuid, uuidUser}=body;
         const response=await this.publicationUseCase.updateLikes(uuid,uuidUser);
+        res.send(response);
+    }
+    
+    
+    public async deleteLikesCtrl({body}:Request,res:Response){
+        const {uuid, uuidUser}=body;
+        const response=await this.publicationUseCase.deleteLikes(uuid,uuidUser);
         res.send(response);
     }
 }

@@ -13,4 +13,5 @@ export interface PublicationRepository{
     deletePublication(uuid:string):Promise<PublicationEntity|null>;
     listPublicationsPag(numPage:string):Promise<PublicationEntity[]|null>;
     updateLikes(uuid:string,uuidUser:string):Promise<PublicationEntity|null>;
+    deleteLikes(uuid:string,uuidUser:string):Promise<PublicationEntity|null>;
 }

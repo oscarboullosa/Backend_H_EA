@@ -135,4 +135,14 @@ export class MongoPublicationRepository implements PublicationRepository{
             )
         return responseItem;
     }
+
+    async deleteLikes(uuid: string, uuidUser: string): Promise<any> {
+        const responseItem = await PublicationModel.findOneAndUpdate(
+            { _id: uuid }, 
+            { $pull: { likesPublication: new Types.ObjectId(uuidUser) } },
+            { new: true }
+        );
+        return responseItem;
+    }
+    
 }
