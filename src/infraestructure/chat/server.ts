@@ -8,19 +8,25 @@ const io = socket(server);
 const rooms = {};
 
 io.on('connection', socket => {
+    console.log('connection')
     /*
         If a peer is initiator, he will create a new room
         otherwise if peer is receiver he will join the room
     */
     socket.on('join room', roomID => {
-
+        console.log('join room')
         if(rooms[roomID]){
+            console.log('RoomId: '+roomID)
+            console.log('SocketID: '+socket.id)
             // Receiving peer joins the room
             rooms[roomID].push(socket.id)
+            console.log('rooms[roomID].push(socket.id)  :'+rooms[roomID].push(socket.id))
         }
         else{
             // Initiating peer create a new room
+            console.log('Initiating peer create a new room')
             rooms[roomID] = [socket.id];
+            console.log('RoomIDelse:    '+roomID);
         }
 
         /*
@@ -29,9 +35,11 @@ io.on('connection', socket => {
             For initiating peer it would be receiving peer and vice versa.
         */
         const otherUser = rooms[roomID].find(id => id !== socket.id);
+        console.log('OtherUser:  '+otherUser);
         if(otherUser){
             socket.emit("other user", otherUser);
             socket.to(otherUser).emit("user joined", socket.id);
+            console.log('Emited')
         }
     });
 
@@ -39,6 +47,7 @@ io.on('connection', socket => {
         The initiating peer offers a connection
     */
     socket.on('offer', payload => {
+        console.log('Offers connection')
         io.to(payload.target).emit('offer', payload);
     });
 
@@ -46,10 +55,12 @@ io.on('connection', socket => {
         The receiving peer answers (accepts) the offer
     */
     socket.on('answer', payload => {
+        console.log('Accepts')
         io.to(payload.target).emit('answer', payload);
     });
 
     socket.on('ice-candidate', incoming => {
+        console.log('ICE')
         io.to(incoming.target).emit('ice-candidate', incoming.candidate);
     })
 });
