@@ -10,10 +10,21 @@ import routeActivity from "./route/activity.route";
 import routeApplication from "./route/application.route";
 import { deleteLocalFileUser, uploadUser } from "./controller/multer/userMulter.ctrl";
 import { deleteLocalFilePublication, uploadPublication } from "./controller/multer/publicationMulter.ctrl";
+import http from 'http';
+import { Server } from "socket.io";
+import { createSocketServer } from "./chat/server";
+
+
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const server=http.createServer(app);
+const io=new Server(server);
+
+createSocketServer(io);
 
 const port = process.env.PORT || 3001;
 

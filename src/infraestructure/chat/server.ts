@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const socket = require('socket.io');
 const io = socket(server);
 
+export function createSocketServer(io){
 const rooms = {};
 
 io.on('connection', socket => {
@@ -66,3 +67,4 @@ io.on('connection', socket => {
 });
 
 server.listen(9000, () => console.log("Server is up and running on Port 9000"));
+}
