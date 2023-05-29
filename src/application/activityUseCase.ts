@@ -21,7 +21,7 @@ export class ActivityUseCase{
         return listActivity;
     }
 
-    public updateActivity=async(uuid:string,{nameActivity,creatorActivity,participantsActivity,publicationActivity,dateActivity,hoursActivity,idLocation,descriptionActivity,privacyActivity,roleActivity}:{nameActivity:string,creatorActivity:string,participantsActivity:[string],publicationActivity:string,dateActivity:Date,hoursActivity:[string],idLocation:string,descriptionActivity:string,privacyActivity:boolean,roleActivity:"verificado" | "common" | "empresa"})=>{
+    public updateActivity=async(uuid:string,{nameActivity,creatorActivity,participantsActivity,publicationActivity,dateActivity,hoursActivity,idLocation,descriptionActivity,privacyActivity,roleActivity}:{nameActivity:string,creatorActivity:string,participantsActivity:[string],publicationActivity:[string],dateActivity:Date,hoursActivity:[string],idLocation:string,descriptionActivity:string,privacyActivity:boolean,roleActivity:"verificado" | "common" | "empresa"})=>{
         const activityValue=new ActivityValue({uuid,nameActivity,creatorActivity,participantsActivity,publicationActivity,dateActivity,hoursActivity,idLocation,descriptionActivity,privacyActivity,roleActivity});
         const activity=await this.activityRepository.updateActivity(uuid,activityValue);
         if (!activity) {
@@ -35,7 +35,7 @@ export class ActivityUseCase{
         return activity;
     }
 
-    public insertActivity=async({uuid,nameActivity,creatorActivity,participantsActivity,publicationActivity,dateActivity,hoursActivity,idLocation,descriptionActivity,privacyActivity,roleActivity}:{uuid:string,nameActivity:string,creatorActivity:string,participantsActivity:[string],publicationActivity:string,dateActivity:Date,hoursActivity:[string],idLocation:string,descriptionActivity:string,privacyActivity:boolean,roleActivity:"verificado" | "common" | "empresa"})=>{
+    public insertActivity=async({uuid,nameActivity,creatorActivity,participantsActivity,publicationActivity,dateActivity,hoursActivity,idLocation,descriptionActivity,privacyActivity,roleActivity}:{uuid:string,nameActivity:string,creatorActivity:string,participantsActivity:[string],publicationActivity:[string],dateActivity:Date,hoursActivity:[string],idLocation:string,descriptionActivity:string,privacyActivity:boolean,roleActivity:"verificado" | "common" | "empresa"})=>{
         const activityValue=new ActivityValue({uuid,nameActivity,creatorActivity,participantsActivity,publicationActivity,dateActivity,hoursActivity,idLocation,descriptionActivity,privacyActivity,roleActivity});
         const activity=await this.activityRepository.insertActivity(activityValue);
         if (!activity) {

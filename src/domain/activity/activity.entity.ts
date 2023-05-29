@@ -3,7 +3,7 @@ export interface ActivityEntity{
     nameActivity: string;
     creatorActivity: string;
     participantsActivity?: [string];
-    publicationActivity?: string;
+    publicationActivity?: [string];
     dateActivity: Date;
     hoursActivity: [string];
     idLocation?: string;
