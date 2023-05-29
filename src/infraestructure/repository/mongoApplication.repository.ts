@@ -23,7 +23,16 @@ export class MongoApplicationRepository implements ApplicationRepository{
     }
 
     async insertApplication(data: ApplicationEntity): Promise<any> {
-        const application=await ApplicationModel.create(data);
+        const item = await ApplicationModel.create(data);
+        
+        // Actualizar la propiedad uuid con el valor de response._id
+        const updatedData = {
+            ...data,
+            uuid: item._id,
+        };
+        // Realizar la actualización en la base de datos
+        const application= await ApplicationModel.updateOne({ _id: item._id }, updatedData);
+        
         return application;
     }
 
