@@ -14,8 +14,10 @@ export class PublicationController{
         this.listPublicationPagCtrl=this.listPublicationPagCtrl.bind(this);
         this.getNumPublicationsCtrl=this.getNumPublicationsCtrl.bind(this);
         this.getFollowingPostCtrl=this.getFollowingPostCtrl.bind(this);
+        this.getLikesCtrl=this.getLikesCtrl.bind(this);
         this.getNumFollowingPostCtrl=this.getNumFollowingPostCtrl.bind(this);
         this.updateLikesCtrl=this.updateLikesCtrl.bind(this);
+        this.deleteLikesCtrl=this. deleteLikesCtrl.bind(this);
         
     }
 
@@ -160,9 +162,24 @@ export class PublicationController{
         res.send(data);
     }
 
+    public async getLikesCtrl({params}:Request,res:Response){
+        console.log(params);
+        const {uuid='', numPage=''}=params;
+        const response=await this.publicationUseCase.getLikes(uuid,numPage);
+        const data=response ? response:"NOT_FOUND";
+        res.send(data);
+    }
+
     public async updateLikesCtrl({body}:Request,res:Response){
         const {uuid, uuidUser}=body;
         const response=await this.publicationUseCase.updateLikes(uuid,uuidUser);
+        res.send(response);
+    }
+    
+    
+    public async deleteLikesCtrl({body}:Request,res:Response){
+        const {uuid, uuidUser}=body;
+        const response=await this.publicationUseCase.deleteLikes(uuid,uuidUser);
         res.send(response);
     }
 }
