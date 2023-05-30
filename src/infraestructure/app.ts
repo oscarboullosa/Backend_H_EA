@@ -19,15 +19,31 @@ import {
 import http from "http";
 import { Server } from "socket.io";
 import { createSocketServer } from "./chat/server";
+import { createServer } from "http";
+//import {version} from "../../package.json"
+import config from "./config/default";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const server = http.createServer(app);
-const io = new Server(server);
+const porto = config.port;
+const host = config.host;
+const corsOrigin = "*";
+/*const io = new Server(9201);
 
-createSocketServer(io);
+createSocketServer(io);*/
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: corsOrigin,
+    credentials: true,
+  },
+});
+
+httpServer.listen(porto, host, () => {
+  createSocketServer({ io });
+});
 
 const port = process.env.PORT || 3001;
 

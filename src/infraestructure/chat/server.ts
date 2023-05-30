@@ -11,13 +11,13 @@ interface Room {
 
 const rooms: Room = {};
 
-export function createSocketServer(io: Server) {
+export function createSocketServer(io: any) {
   console.log("Ando aqui");
   console.log("io:    " + io);
-  io.on("connection", (socket) => {
+  io.on("connection", (socket: any) => {
     console.log("connection");
 
-    socket.on("join room", (roomID) => {
+    socket.on("join room", (roomID: any) => {
       console.log("join room");
 
       if (rooms[roomID]) {
@@ -41,23 +41,23 @@ export function createSocketServer(io: Server) {
       }
     });
 
-    socket.on("offer", (payload) => {
+    socket.on("offer", (payload: any) => {
       console.log("Offers connection");
       io.to(payload.target).emit("offer", payload);
     });
 
-    socket.on("answer", (payload) => {
+    socket.on("answer", (payload: any) => {
       console.log("Accepts");
       io.to(payload.target).emit("answer", payload);
     });
 
-    socket.on("ice-candidate", (incoming) => {
+    socket.on("ice-candidate", (incoming: any) => {
       console.log("ICE");
       io.to(incoming.target).emit("ice-candidate", incoming.candidate);
     });
   });
 
-  server.listen(9000, () =>
+  server.listen(9201, () =>
     console.log("Server is up and running on Port 9000")
   );
 }
