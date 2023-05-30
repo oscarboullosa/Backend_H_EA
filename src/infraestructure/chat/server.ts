@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+var io=require('socket.io')
 interface Room {
   [roomId: string]: string[]; // Array of socket IDs
 }
@@ -57,7 +57,9 @@ export function createSocketServer(io: any) {
     });
   });
 
-  server.listen(9001, () =>
-    console.log("Server is up and running on Port 9000")
-  );
+ /* server.listen(9001, () =>
+    console.log("Server is up and running on Port 9001")
+  );*/
+  server.listen(3000,()=>
+  console.log("Server is up and running on Port 3000 "))
 }

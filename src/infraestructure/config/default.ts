@@ -1,5 +1,5 @@
 export default {
-    port: 9001,
-    host: "147.83.7.158",
+    port: 3000,
+    host: "0.0.0.0",
     //host:"localhost",
   };
