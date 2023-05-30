@@ -53,6 +53,12 @@ export class PublicationUseCase{
         return numPublications;
     }
 
+    public getLikes=async( uuid:string, numPage:string)=>{
+        console.log(uuid);
+        const publicationLikes=await this.publicationRepository.getLikes(uuid, numPage);
+        return publicationLikes;
+    }
+
     public listPublicationsPag=async(numPage:string)=>{
         const listPublication=await this.publicationRepository.listPublicationsPag(numPage);
         return listPublication;
@@ -60,6 +66,11 @@ export class PublicationUseCase{
 
     public updateLikes=async(uuid:string,uuidUser:string)=>{
         const publication=await this.publicationRepository.updateLikes(uuid,uuidUser);
+        return publication;
+    }
+    
+    public deleteLikes=async(uuid:string,uuidUser:string)=>{
+        const publication=await this.publicationRepository.deleteLikes(uuid,uuidUser);
         return publication;
     }
 

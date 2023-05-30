@@ -11,6 +11,8 @@ export class ActivityController{
         this.getNumActivityCtrl=this.getNumActivityCtrl.bind(this);
         this.insertActivityCtrl=this.insertActivityCtrl.bind(this);
         this.getParticipantsOfActivityCtrl=this.getParticipantsOfActivityCtrl.bind(this);
+        this.getActivitiesByUserAndWeekCtrl=this.getActivitiesByUserAndWeekCtrl.bind(this);
+        this.getFollowedUsersActivitiesCtrl=this.getFollowedUsersActivitiesCtrl.bind(this);
     }
 
     public async getActivityByIdCtrl({params}:Request,res:Response){
@@ -59,4 +61,21 @@ export class ActivityController{
         const data=response ? response:"NOT_FOUND";
         res.send(data);
     }
+
+    public async getActivitiesByUserAndWeekCtrl({params}:Request,res:Response){
+        const {uuid,date}=params;
+        const startDate = new Date(date);
+        const response=await this.activityUseCase.getActivitiesByUserAndWeek(uuid,startDate); 
+        const data=response ? response:"NOT_FOUND";
+        res.send(data);
+    }
+
+    public async getFollowedUsersActivitiesCtrl({params}:Request,res:Response){
+        const {uuid,numPage,date}=params;
+        const startDate = new Date(date);
+        const response=await this.activityUseCase.getFollowedUsersActivities(uuid,numPage,startDate); 
+        const data=response ? response:"NOT_FOUND";
+        res.send(data);
+    }
+
 }
