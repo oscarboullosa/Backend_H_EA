@@ -57,7 +57,7 @@ export function createSocketServer(io: any) {
     });
   });
 
-  server.listen(9201, () =>
+  server.listen(9001, () =>
     console.log("Server is up and running on Port 9000")
   );
 }
