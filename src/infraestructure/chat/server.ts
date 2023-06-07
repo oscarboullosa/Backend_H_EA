@@ -1,17 +1,24 @@
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
+import { createServer } from "http";
 
+const corsOrigin = "*"
 const app = express();
-const server = http.createServer(app);
-var io=require('socket.io')
+const httpServer=createServer(app);
+const io=new Server(httpServer,{
+  cors:{
+    origin:corsOrigin,
+    credentials:true,
+  }
+})
 interface Room {
   [roomId: string]: string[]; // Array of socket IDs
 }
 
 const rooms: Room = {};
 
-export function createSocketServer(io: any) {
+export function createSocketServer() {
   console.log("Ando aqui");
   console.log("io:    " + io);
   io.on("connection", (socket: any) => {
@@ -57,9 +64,6 @@ export function createSocketServer(io: any) {
     });
   });
 
- /* server.listen(9001, () =>
-    console.log("Server is up and running on Port 9001")
-  );*/
-  server.listen(3000,()=>
+  httpServer.listen(3000,()=>
   console.log("Server is up and running on Port 3000 "))
 }
