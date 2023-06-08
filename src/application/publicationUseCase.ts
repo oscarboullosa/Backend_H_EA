@@ -46,6 +46,12 @@ export class PublicationUseCase{
         const numPublications=await this.publicationRepository.getFollowingPost(numPage, uuid);
         return numPublications;
     }
+
+    // BEREAL
+    public getOwnPosts=async(uuid:string)=>{
+        const ownPosts=await this.publicationRepository.getOwnPosts(uuid);
+        return ownPosts;
+    }
     
     public getNumFollowingPost=async( uuid:string)=>{
         console.log(uuid);

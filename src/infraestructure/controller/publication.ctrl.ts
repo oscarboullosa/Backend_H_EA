@@ -14,6 +14,7 @@ export class PublicationController{
         this.listPublicationPagCtrl=this.listPublicationPagCtrl.bind(this);
         this.getNumPublicationsCtrl=this.getNumPublicationsCtrl.bind(this);
         this.getFollowingPostCtrl=this.getFollowingPostCtrl.bind(this);
+        this.getOwnPostsCtrl=this.getOwnPostsCtrl.bind(this);
         this.getLikesCtrl=this.getLikesCtrl.bind(this);
         this.getNumFollowingPostCtrl=this.getNumFollowingPostCtrl.bind(this);
         this.updateLikesCtrl=this.updateLikesCtrl.bind(this);
@@ -150,6 +151,15 @@ export class PublicationController{
         console.log(params);
         const {numPage='', uuid=''}=params;
         const response=await this.publicationUseCase.getFollowingPost(numPage, uuid);
+        const data=response ? response:"NOT_FOUND";
+        res.send(data);
+    }
+
+    // BEREAL
+    public async getOwnPostsCtrl({params}:Request,res:Response){
+        console.log(params);
+        const {uuid=''}=params;
+        const response=await this.publicationUseCase.getOwnPosts(uuid);
         const data=response ? response:"NOT_FOUND";
         res.send(data);
     }
