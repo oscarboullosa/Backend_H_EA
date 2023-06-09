@@ -17,7 +17,7 @@ routePublication.get("/publication/all/count/docs",checkJwt,publicationCtrl.getN
 routePublication.get("/publication/followingPost/:numPage/:uuid",checkJwt,publicationCtrl.getFollowingPostCtrl);//Ok
 routePublication.get("/publication/numFollowingPost/:uuid",checkJwt,publicationCtrl.getNumFollowingPostCtrl);//Ok
 routePublication.get("/publication/likes/:uuid/:numPage",checkJwt,publicationCtrl.getLikesCtrl);//Ok uuid --> Publicación
-
+routePublication.get("/publication/ownPosts/:uuid",checkJwt,publicationCtrl.getOwnPostsCtrl); //BEREAL
 
 routePublication.put("/publication/:uuid",publicationCtrl.updatePublicationCtrl);//Ok
 routePublication.put("/publication/parameter/like",checkJwt,publicationCtrl.updateLikesCtrl);//Ok

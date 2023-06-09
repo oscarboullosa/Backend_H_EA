@@ -82,6 +82,13 @@ export class MongoPublicationRepository implements PublicationRepository{
         return publications;
     }
 
+    // BEREAL
+    async getOwnPosts(uuid:string): Promise<any> {      
+        // Obtener todas las publicaciones del usuario.
+        const publications = await PublicationModel.find({ idUser: uuid }).populate("idUser").exec();
+        return publications;
+    }    
+
     async getNumFollowingPost(uuid:string): Promise<any> {
         // Obtener los IDs de los usuarios seguidos
         const user = await UserModel.findById({_id:uuid}).exec();
