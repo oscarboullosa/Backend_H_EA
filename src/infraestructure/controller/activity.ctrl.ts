@@ -13,6 +13,14 @@ export class ActivityController{
         this.getParticipantsOfActivityCtrl=this.getParticipantsOfActivityCtrl.bind(this);
         this.getActivitiesByUserAndWeekCtrl=this.getActivitiesByUserAndWeekCtrl.bind(this);
         this.getFollowedUsersActivitiesCtrl=this.getFollowedUsersActivitiesCtrl.bind(this);
+
+        this.getActivitiesByLocationCtrl=this.getActivitiesByLocationCtrl.bind(this);
+    }
+
+    public async getActivitiesByLocationCtrl({params}:Request,res:Response){
+        const { locationId = '' } = params;
+        const response = await this.activityUseCase.getActivitiesByLocation(`${locationId}`);
+        res.send(response)
     }
 
     public async getActivityByIdCtrl({params}:Request,res:Response){
