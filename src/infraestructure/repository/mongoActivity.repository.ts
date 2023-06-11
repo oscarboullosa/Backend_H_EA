@@ -78,13 +78,19 @@ export class MongoActivityRepository implements ActivityRepository{
     async getActivitiesByUserAndWeek(uuid: string, startDate: Date): Promise<any> {
         const startOfWeek = new Date(startDate);
         const dayOfWeek = startDate.getDay();
+        console.log("dayofWeek", dayOfWeek);
+        // Ajustar el día de la semana
+        const adjustedDayOfWeek = (dayOfWeek + 6) % 7; // Convertir domingo (0) a 6 y desplazar los demás días
 
         // Obtener el primer día (lunes) de la semana
-        startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek + 1);
+        startOfWeek.setDate(startOfWeek.getDate() - adjustedDayOfWeek + 1);
+        console.log("start of week", startOfWeek);
 
         // Obtener el último día (domingo) de la semana
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(23, 59, 59, 999);
+        console.log("end of week",endOfWeek);
         const activities = await ActivityModel.find({ participantsActivity: uuid }).exec();
         const activitiesOfWeek = activities.filter((activity) =>
             activity.dateActivity >= startOfWeek &&
@@ -108,10 +114,12 @@ export class MongoActivityRepository implements ActivityRepository{
 
         const startOfWeek = new Date(startDate);
         const dayOfWeek = startDate.getDay();
-        startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek + 1);
+        // Ajustar el día de la semana
+        const adjustedDayOfWeek = (dayOfWeek + 6) % 7; // Convertir domingo (0) a 6 y desplazar los demás días
+        startOfWeek.setDate(startOfWeek.getDate() - adjustedDayOfWeek + 1);
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
-
+        endOfWeek.setHours(23, 59, 59, 999);
         const pageSize = 1; // Tamaño de página fijo
         const numPage = parseInt(page, 10);
         const startIndex = (numPage -1) * pageSize;
