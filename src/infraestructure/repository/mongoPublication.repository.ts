@@ -7,7 +7,7 @@ import { PublicationRepository } from './../../domain/publication/publication.re
 
 export class MongoPublicationRepository implements PublicationRepository{
     async getPublicationById(uuid: string): Promise<any> {
-        const response = await PublicationModel.findOne({_id:uuid});
+        const response = await PublicationModel.findOne({_id:uuid}).populate("idUser");
         return response;
     }
 
