@@ -5,6 +5,22 @@ import { NotFoundError } from "./notFoundError";
 export class ActivityUseCase{
     constructor(private readonly activityRepository:ActivityRepository){}
 
+    public getActivitiesByLocation=async(idLocation: string)=>{
+        const activities = await this.activityRepository.listActivity();
+        if (!activities) {
+            throw new NotFoundError("There are no activities.");
+        }
+        else{
+            const activitiesByLocation = activities.filter(activity => activity.idLocation?.toString() === idLocation.toString());
+            if (!activitiesByLocation){
+                throw new NotFoundError("There are no activities in this location.");
+            }
+            else {
+                return activitiesByLocation;
+            }
+        }
+    }
+
     public getActivityById=async(uuid:string)=>{
         const activity = await this.activityRepository.getActivityById(uuid);
         if (!activity) {

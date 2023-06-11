@@ -21,7 +21,12 @@ export class MongoLocationRepository implements LocationRepository{
     }
 
     async insertLocation(data:LocationEntity):Promise<any>{
-        const location=await LocationModel.create(data);
+        const item=await LocationModel.create(data);
+        const updatedData = {
+            ...data,
+            uuid: item._id,
+        };
+        const location= await LocationModel.updateOne({ _id: item._id }, updatedData);
         return location;
     }
 

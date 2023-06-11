@@ -6,6 +6,11 @@ import { ObjectId } from 'mongodb';
 
 export class MongoActivityRepository implements ActivityRepository{
 
+    async getActivitiesByLocation(locationId: string): Promise<any> {
+        const responseItems = await ActivityModel.find({ idLocation: locationId });
+        return responseItems;
+    }
+
     async getActivityById(uuid: string): Promise<any> {
         const responseItem = await ActivityModel.findOne({_id: uuid })
         return responseItem;

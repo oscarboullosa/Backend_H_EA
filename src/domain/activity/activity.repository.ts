@@ -12,4 +12,5 @@ export interface ActivityRepository{
     getNumActivity():Promise<String|null>;
     getActivitiesByUserAndWeek(uuid: string, startDate: Date): Promise<ActivityEntity[]|null>
     getFollowedUsersActivities(currentUserId:string, page: string, startDate: Date): Promise<any>;
+    getActivitiesByLocation(locationId: string): Promise<ActivityEntity[] | null>;
 }
