@@ -10,12 +10,14 @@ export class ActivityUseCase{
         if (!activities) {
             throw new NotFoundError("There are no activities.");
         }
-        const activitiesByLocation: ActivityValue[] = activities.filter(activity => activity.idLocation === idLocation);
-        if (!activitiesByLocation){
-            throw new NotFoundError("There are no activities in this location.");
-        }
-        else {
-            return activitiesByLocation;
+        else{
+            const activitiesByLocation = activities.filter(activity => activity.idLocation?.toString() === idLocation.toString());
+            if (!activitiesByLocation){
+                throw new NotFoundError("There are no activities in this location.");
+            }
+            else {
+                return activitiesByLocation;
+            }
         }
     }
 

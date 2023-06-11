@@ -17,11 +17,22 @@ export class ActivityController{
         this.getActivitiesByLocationCtrl=this.getActivitiesByLocationCtrl.bind(this);
     }
 
+    /*
     public async getActivitiesByLocationCtrl({params}:Request,res:Response){
         const { locationId = '' } = params;
         const response = await this.activityUseCase.getActivitiesByLocation(`${locationId}`);
         res.send(response)
     }
+    */
+
+    public async getActivitiesByLocationCtrl({params}:Request,res:Response){
+        console.log("ENTRA AQUÍ");
+        const { locationId = '' } = params;
+        const response=await this.activityUseCase.getActivitiesByLocation(`${locationId}`);
+        console.log("RESPUESTA: " + response);
+        const data=response ? response:"NOT_FOUND";
+        res.send(data);
+    };
 
     public async getActivityByIdCtrl({params}:Request,res:Response){
         const { uuid = '' } = params;
