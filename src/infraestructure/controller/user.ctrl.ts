@@ -13,11 +13,13 @@ export class UserController{
     constructor(private userUseCase:UserUseCase){
         this.emailService=new NodemailerEmailService();
         this.getUserByIdCtrl = this.getUserByIdCtrl.bind(this);
+        this.getUserByEmailCtrl= this.getUserByEmailCtrl.bind(this);
         this.listUserCtrl=this.listUserCtrl.bind(this);
         this.updateUserCtrl=this.updateUserCtrl.bind(this);
         this.registerUserCtrl=this.registerUserCtrl.bind(this);
         this.loginUserCtrl=this.loginUserCtrl.bind(this);
         this.loginFrontendUserCtrl=this.loginFrontendUserCtrl.bind(this);
+        this.loginFrontendGoogleUserCtrl=this.loginFrontendGoogleUserCtrl.bind(this);
         this.deleteUserCtrl=this.deleteUserCtrl.bind(this);
         this.listUserPagCtrl=this.listUserPagCtrl.bind(this);
         this.getNumUsersCtrl=this.getNumUsersCtrl.bind(this);
@@ -36,6 +38,13 @@ export class UserController{
         const { uuid = '' } = params;
         console.log(params);
         const response=await this.userUseCase.getUserById(`${uuid}`);
+        res.send(response)
+    }
+
+    public async getUserByEmailCtrl({params}:Request,res:Response){
+        const { mailUser = '' } = params;
+        console.log(params);
+        const response=await this.userUseCase.getUserByEmail(`${mailUser}`);
         res.send(response)
     }
 
@@ -190,6 +199,18 @@ export class UserController{
             res.send(responseUser);
             console.log(res.status);
         } else if (responseUser === "NOT_FOUND_USER") {
+            res.status(404);
+            res.send(responseUser);
+            console.log("not found user " + res.status);
+        } else {
+            res.send(responseUser);
+        }
+    }
+
+    public async loginFrontendGoogleUserCtrl({ body }: Request, res: Response){
+        const responseUser=await this.userUseCase.loginFrontendGoogleUser(body);  
+        console.log("Respuesta del login: " + responseUser)  
+        if (responseUser === "NOT_FOUND_USER") {
             res.status(404);
             res.send(responseUser);
             console.log("not found user " + res.status);

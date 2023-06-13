@@ -14,6 +14,14 @@ export class MongoUserRepository implements UserRepository{
         return response;
     }
 
+    async getUserByEmail(mailUser: string): Promise<any> {
+        console.log(mailUser);
+        const response = await UserModel.findOne({mailUser:mailUser});
+        if (!response) {return 'NOT_FOUND_USER';}
+        console.log(response);
+        return response;
+    }
+
     async listUser(): Promise<any> {
         const response = await UserModel.find();
         console.log(response);
@@ -30,6 +38,7 @@ export class MongoUserRepository implements UserRepository{
         console.log("Estoy en mongo")
         const {uuid,appUser,nameUser,surnameUser,mailUser,passwordUser,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser}=data;
         const checkIs = await UserModel.findOne({ mailUser });
+        console.log("Dentro del register, el mail que cojo es: "+ mailUser)
         if (checkIs) return "ALREADY_USER";
         const passHash = await encrypt(passwordUser);
         const encryptedData= {uuid,appUser,nameUser,surnameUser,mailUser,passwordUser:passHash,photoUser,birthdateUser,genderUser,ocupationUser,descriptionUser,roleUser,privacyUser,deletedUser,followedUser,followersUser};
@@ -73,6 +82,20 @@ export class MongoUserRepository implements UserRepository{
         const isCorrect = await verified(passwordUser, passwordHash);
         if (!isCorrect) return "PASSWORD_INCORRECT";
 
+        const token = generateToken(checkIs.mailUser, checkIs.roleUser);
+        const item = {token, user: checkIs};
+        return item;
+    };
+
+    async loginFrontendGoogleUser(data:AuthEntity):Promise<any>{
+        const{mailUser,passwordUser}=data;
+        console.log("Mail del user: " + mailUser)
+        const checkIs=await UserModel.findOne({mailUser:mailUser});
+        console.log("Repository response: " + checkIs)
+        if (!checkIs) return 'NOT_FOUND_USER';
+        //const passwordHash = checkIs.passwordUser;
+        //const isCorrect = await verified(passwordUser, passwordHash);
+        //if (!isCorrect) return "PASSWORD_INCORRECT";
         const token = generateToken(checkIs.mailUser, checkIs.roleUser);
         const item = {token, user: checkIs};
         return item;

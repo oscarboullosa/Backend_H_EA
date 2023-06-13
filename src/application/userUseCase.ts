@@ -12,6 +12,14 @@ export class UserUseCase{
         }
         return user;
     }
+    public getUserByEmail=async(email:string)=>{
+        const user = await this.userRepository.getUserByEmail(email);
+        if (!user) {
+            throw new NotFoundError("User not found");
+        }
+        console.log(user)
+        return user;
+    }
 
     public listUser=async()=>{
         const listUser=await this.userRepository.listUser();
@@ -53,6 +61,17 @@ export class UserUseCase{
     public loginFrontendUser=async({mailUser,passwordUser}:{mailUser:string,passwordUser:string})=>{
         const userAuthValue=new AuthValue({mailUser,passwordUser});
         const loginUser=await this.userRepository.loginFrontendUser(userAuthValue);
+        if (!loginUser) {
+            throw new NotFoundError("User not found");
+        }
+        return loginUser;
+    }
+
+    public loginFrontendGoogleUser=async({mailUser,passwordUser}:{mailUser:string,passwordUser:string})=>{
+        const userAuthValue=new AuthValue({mailUser,passwordUser});
+        console.log("El userAuthValue es: mailUser:"+mailUser)
+        const loginUser=await this.userRepository.loginFrontendGoogleUser(userAuthValue);
+        console.log("Respuesta loginUser: "+ loginUser)
         if (!loginUser) {
             throw new NotFoundError("User not found");
         }

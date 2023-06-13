@@ -12,6 +12,7 @@ const userUseCase = new UserUseCase(userRepo)
 const userCtrl = new UserController(userUseCase)
 
 routeUser.get("/user/:uuid",checkJwt,userCtrl.getUserByIdCtrl);//ok
+routeUser.get("/user/google/check/:mailUser",userCtrl.getUserByEmailCtrl),
 routeUser.get("/users/all",checkJwt,userCtrl.listUserCtrl);//OK logMiddleware
 routeUser.get("/user/all/:numPage",checkJwt,userCtrl.listUserPagCtrl);//ok
 routeUser.get("/user/all/count/docs",checkJwt,userCtrl.getNumUsersCtrl);
@@ -28,6 +29,7 @@ routeUser.post('/user/followed',checkJwt, userCtrl.insertFollowedCtrl);//ok
 routeUser.post('/user/register',userCtrl.registerUserCtrl);//ok
 routeUser.post('/user/login',userCtrl.loginUserCtrl);//Ok
 routeUser.post('/user/loginfrontend',userCtrl.loginFrontendUserCtrl);//Ok
+routeUser.post('/user/loginfrontendgoogle',userCtrl.loginFrontendGoogleUserCtrl);
 
 routeUser.delete("/user/:uuid",checkJwt,userCtrl.deleteUserCtrl);//ok
 routeUser.delete('/user/follower/this',checkJwt, userCtrl.deleteFollowerCtrl);
