@@ -1,14 +1,13 @@
 import { RatingsEntity } from "./ratings.entity";
 
-export class RatingValue implements RatingsEntity{
+export class RatingsValue implements RatingsEntity{
     uuid: string;
-    ratingType: "user" | "activity" | "location" | "comment" | "publication";
+    ratingType: "users" | "activities" | "locations" | "comments" | "publications";
     idRatedObject: string;
     ratingAverage: number;
     idRaters?:[string];
 
-    constructor({uuid,ratingType,idRatedObject,ratingAverage,idRaters}:
-        {uuid:string,ratingType:"user" | "activity" | "location" | "comment" | "publication",idRatedObject:string,ratingAverage:number,idRaters?:[string]}){
+    constructor({uuid,ratingType,idRatedObject,ratingAverage,idRaters}:{uuid:string,ratingType:"users" | "activities" | "locations" | "comments" | "publications",idRatedObject:string,ratingAverage:number,idRaters?:[string]}){
         this.uuid=uuid;
         this.ratingType=ratingType;
         this.idRatedObject=idRatedObject;
