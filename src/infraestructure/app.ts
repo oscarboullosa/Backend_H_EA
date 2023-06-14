@@ -8,6 +8,7 @@ import routeComment from "./route/comment.route";
 import routePublication from "./route/publication.route";
 import routeActivity from "./route/activity.route";
 import routeApplication from "./route/application.route";
+import routeRatings from "./route/ratings.route";
 import {
   deleteLocalFileUser,
   uploadUser,
@@ -46,6 +47,7 @@ const port = process.env.PORT || 3001;
 app.use(uploadUser.single("photoUser"), routeUser);
 app.use(routeLocation);
 app.use(routeComment);
+app.use(routeRatings);
 app.use(
   uploadPublication.single("photoPublication"),
   routePublication,

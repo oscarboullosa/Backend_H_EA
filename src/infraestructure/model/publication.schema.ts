@@ -38,5 +38,5 @@ const PublicationSchema=new Schema(
         versionKey: false,
     }
 );
-const PublicationModel=model('publication',PublicationSchema);
+const PublicationModel=model('publications',PublicationSchema);
 export default PublicationModel;

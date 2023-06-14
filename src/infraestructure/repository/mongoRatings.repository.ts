@@ -36,7 +36,7 @@ export class MongoRatingsRepository implements RatingsRepository{
         return responseItem;
     }
     
-    async getAverageValueRating(idRatedObject: string, ratingType: string): Promise<number | null> {
+    async getAverageValueRating(idRatedObject: string, ratingType: string): Promise<any> {
         const result = await RatingsModel.findOne({ idRatedObject, ratingType });
         if (result) {
           return result.ratingAverage;

@@ -14,6 +14,23 @@ const RatingsSchema = new Schema({
         enum:["users", "activities", "locations", "comments", "publications"],
         required:true,
     },
+    idRatedObject: {
+        type: String,
+        required: true,
+        validate: {
+          validator: async function (value: string) {
+            const collections = ['users', 'activities', 'locations', 'comments', 'publications'];
+            for (const collection of collections) {
+              const result = await model(collection).findOne({ _id: value }).exec();
+              if (result) {
+                return true;
+              }
+            }
+            return false;
+          },
+        },
+    },
+    /*
     idRatedObject:{
         type: Schema.Types.ObjectId,
         ref: function () {
@@ -21,6 +38,7 @@ const RatingsSchema = new Schema({
         },
         required:true,
     },
+    */
     ratingAverage:{
         type: Number,
         required:true,
