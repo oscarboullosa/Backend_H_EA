@@ -11,21 +11,21 @@ const ratingsUseCase = new RatingsUseCase(ratingsRepo);
 const ratingsCtrl = new RatingsController(ratingsUseCase);
 
 // (GET) getAllRatings()
-routeRatings.get("/ratings/all",checkJwt,ratingsCtrl.getAllRatingsCtrl);
+routeRatings.get("/ratings/all",checkJwt,ratingsCtrl.getAllRatingsCtrl); // ¡Verificada!
 
 // (GET) getUsersWhoHaveRated(uuid: string)
-routeRatings.get("/rating/getraters/:uuid",checkJwt,ratingsCtrl.getUsersWhoHaveRatedCtrl);
+routeRatings.get("/rating/getraters/:uuid",checkJwt,ratingsCtrl.getUsersWhoHaveRatedCtrl); // ¡Verificada!
 
 // (GET) getAverageValueRating(idRatedObject: string, ratingType: string)
-routeRatings.get("/rating/getaverage/:idRatedObject/:ratingType",checkJwt,ratingsCtrl.getAverageValueRatingCtrl);
+routeRatings.get("/rating/getaverage/:idRatedObject/:ratingType",checkJwt,ratingsCtrl.getAverageValueRatingCtrl);  // No acaba de ir.
 
 // (GET) getRating(idRatedObject: string, ratingType: string)
-routeRatings.get("/rating/get/:idRatedObject/:ratingType",checkJwt,ratingsCtrl.getRatingCtrl);
+routeRatings.get("/rating/get/:idRatedObject/:ratingType",checkJwt,ratingsCtrl.getRatingCtrl); // ¡Verificada!
 
 // (POST) insertRating(data: RatingsEntity)
-routeRatings.post("/rating/add",checkJwt,ratingsCtrl.insertRatingCtrl);
+routeRatings.post("/rating/add",checkJwt,ratingsCtrl.insertRatingCtrl); // ¡Verificada!
 
 // (PUT) updateRating(uuid: string, data: RatingsEntity)
-routeRatings.put("/rating/update/:uuid",checkJwt,ratingsCtrl.updateRatingCtrl);
+routeRatings.put("/rating/update/:uuid",checkJwt,ratingsCtrl.updateRatingCtrl); // ¡Verificada!
 
 export default routeRatings;
