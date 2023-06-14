@@ -2,15 +2,7 @@ import {  Schema, model, } from "mongoose";
 import {v4 as uuid} from "uuid";
 
 const RatingsSchema = new Schema({
-
-    /*
-    uuid: string;
-    ratingType: "user" | "activity" | "location" | "comment" | "publication";
-    idRatedObject: string;
-    ratingAverage: number;
-    idRaters?:[string];
-    */
-    
+   
     uuid: {
         type: String,
         default:()=>uuid(),
@@ -24,7 +16,9 @@ const RatingsSchema = new Schema({
     },
     idRatedObject:{
         type: Schema.Types.ObjectId,
-        ref:"ratingType",
+        ref: function () {
+            return this.ratingType;
+        },
         required:true,
     },
     ratingAverage:{
