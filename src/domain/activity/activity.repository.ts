@@ -13,4 +13,8 @@ export interface ActivityRepository{
     getActivitiesByUserAndWeek(uuid: string, startDate: Date): Promise<ActivityEntity[]|null>
     getFollowedUsersActivities(currentUserId:string, page: string, startDate: Date): Promise<any>;
     getActivitiesByLocation(locationId: string): Promise<ActivityEntity[] | null>;
+    getAllActivitiesByUser(currentUserId:string): Promise<any>;
+    getAllActivitiesCreatedByUser(currentUserId:string): Promise<any>;
+    getActivitiesByUserAndMonth(uuid: string, startDate: Date): Promise<ActivityEntity[]|null>
+    getActivitiesByUserLast6Weeks(currentUserId:string): Promise<any>;
 }

@@ -5,6 +5,7 @@ import UserModel from "../model/user.schema";
 import { ObjectId } from 'mongodb';
 
 export class MongoActivityRepository implements ActivityRepository{
+    
 
     async getActivitiesByLocation(locationId: string): Promise<any> {
         const responseItems = await ActivityModel.find({ idLocation: locationId });
@@ -83,7 +84,7 @@ export class MongoActivityRepository implements ActivityRepository{
         const adjustedDayOfWeek = (dayOfWeek + 6) % 7; // Convertir domingo (0) a 6 y desplazar los demás días
 
         // Obtener el primer día (lunes) de la semana
-        startOfWeek.setDate(startOfWeek.getDate() - adjustedDayOfWeek + 1);
+        startOfWeek.setDate(startOfWeek.getDate() - adjustedDayOfWeek);
         console.log("start of week", startOfWeek);
 
         // Obtener el último día (domingo) de la semana
@@ -116,7 +117,7 @@ export class MongoActivityRepository implements ActivityRepository{
         const dayOfWeek = startDate.getDay();
         // Ajustar el día de la semana
         const adjustedDayOfWeek = (dayOfWeek + 6) % 7; // Convertir domingo (0) a 6 y desplazar los demás días
-        startOfWeek.setDate(startOfWeek.getDate() - adjustedDayOfWeek + 1);
+        startOfWeek.setDate(startOfWeek.getDate() - adjustedDayOfWeek);
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
         endOfWeek.setHours(23, 59, 59, 999);
@@ -145,4 +146,65 @@ export class MongoActivityRepository implements ActivityRepository{
       
         return activitiesByUser[startIndex];
     }
+
+    async getAllActivitiesByUser(currentUserId: string): Promise<any> {
+        console.log("mongoActivity",currentUserId);
+        const activities = await ActivityModel.find({ participantsActivity: currentUserId }).exec();
+        console.log("usecase",activities);
+        return activities;
+    }
+
+    async getAllActivitiesCreatedByUser(currentUserId: string): Promise<any> {
+        console.log("mongoActivityCreated",currentUserId);
+        const activities = await ActivityModel.find({ creatorActivity: currentUserId }).exec();
+        console.log("usecase",activities);
+        return activities;
+    }
+
+    async getActivitiesByUserAndMonth(uuid: string, startDate: Date): Promise<any> {
+        const startOfMonth = new Date(startDate);
+        startOfMonth.setDate(startOfMonth.getDate() - 30); // Restar 30 días a la fecha de inicio
+        startDate.setHours(23, 59, 59, 999);
+
+        const activities = await ActivityModel.find({ participantsActivity: uuid }).exec();
+        const activitiesOfMonth = activities.filter((activity) =>
+            activity.dateActivity >= startOfMonth && activity.dateActivity <= startDate
+        );
+
+        return activitiesOfMonth;
+    }
+    
+    async getActivitiesByUserLast6Weeks(uuid: string): Promise<number[]> {
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        const dayOfWeek = currentDate.getDay();
+        console.log("dayofWeek", dayOfWeek);
+        // Ajustar el día de la semana
+        const adjustedDayOfWeek = (dayOfWeek + 6) % 7; // Convertir domingo (0) a 6 y desplazar los demás días
+
+        // Obtener el primer día (lunes) de la semana
+        currentDate.setDate(currentDate.getDate() - adjustedDayOfWeek); //ponemos la currentDate a lunes de la semana actual
+        console.log("start of week", currentDate);
+      
+        const activities = await ActivityModel.find({ participantsActivity: uuid }).exec();
+      
+        const activitiesByWeek: number[] = [];
+      
+        for (let i = 0; i < 6; i++) {
+          const startOfWeek = new Date(currentDate);
+          startOfWeek.setDate(startOfWeek.getDate() - i * 7); // Restar i semanas a la fecha actual
+          const endOfWeek = new Date(startOfWeek);
+          endOfWeek.setDate(startOfWeek.getDate() + 6);
+          endOfWeek.setHours(23, 59, 59, 999);
+      
+          const activitiesOfWeek = activities.filter((activity) =>
+            activity.dateActivity >= startOfWeek && activity.dateActivity <= endOfWeek
+          );
+      
+          activitiesByWeek.push(activitiesOfWeek.length);
+        }
+      
+        return activitiesByWeek;
+      }
+
 }
