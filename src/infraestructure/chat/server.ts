@@ -64,6 +64,6 @@ export function createSocketServer() {
     });
   });
 
-  httpServer.listen(3000,()=>
-  console.log("Server is up and running on Port 3000 "))
+  httpServer.listen(443,()=>
+  console.log("Server is up and running on Port 443"))
 }
