@@ -2,20 +2,20 @@ import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import { verifyToken } from "../utils/jwt.handle";
 
-interface RequestExt extends Request{
-    user?: JwtPayload | string ;
+interface RequestExt extends Request {
+  user?: JwtPayload | string;
 }
 
 const checkAdmin = (req: RequestExt, res: Response, next: NextFunction) => {
   try {
     const jwtByUser = req.headers.authorization || "";
     const jwt = jwtByUser.split(" ").pop();
-    const isUser = verifyToken(`${jwt}`) as { id: string, roleUser: string };
+    const isUser = verifyToken(`${jwt}`) as { id: string; roleUser: string };
     if (!isUser) {
       res.status(401);
       res.send("INVALID_JWT");
-    } 
-    if (isUser.roleUser != "admin" ) {
+    }
+    if (isUser.roleUser != "admin") {
       res.status(402);
       res.send("NOT_ADMIN");
     } else {
@@ -29,12 +29,11 @@ const checkAdmin = (req: RequestExt, res: Response, next: NextFunction) => {
   }
 };
 
-
 const checkJwt = (req: RequestExt, res: Response, next: NextFunction) => {
   try {
     const jwtByUser = req.headers.authorization || "";
     const jwt = jwtByUser.split(" ").pop();
-    const isUser = verifyToken(`${jwt}`) as { id: string, roleUser: string };
+    const isUser = verifyToken(`${jwt}`) as { id: string; roleUser: string };
     if (!isUser) {
       res.status(401);
       res.send("NO_TIENES_UN_JWT_VALIDO");

@@ -3,15 +3,15 @@ import http from "http";
 import { Server } from "socket.io";
 import { createServer } from "http";
 
-const corsOrigin = "*"
+const corsOrigin = "*";
 const app = express();
-const httpServer=createServer(app);
-const io=new Server(httpServer,{
-  cors:{
-    origin:corsOrigin,
-    credentials:true,
-  }
-})
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: corsOrigin,
+    credentials: true,
+  },
+});
 interface Room {
   [roomId: string]: string[]; // Array of socket IDs
 }
@@ -64,6 +64,7 @@ export function createSocketServer() {
     });
   });
 
-  httpServer.listen(3000,()=>
-  console.log("Server is up and running on Port 3000"))
+  httpServer.listen(3000, () =>
+    console.log("Server is up and running on Port 3000")
+  );
 }

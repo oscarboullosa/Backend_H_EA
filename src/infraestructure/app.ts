@@ -22,24 +22,23 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { createSocketServer } from "./chat/server";
 
-const corsOrigin = "*"
+const corsOrigin = "*";
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 
 /*const server = http.createServer(app);
 const socket = require('socket.io');
 const io = socket(server);
 
 createSocketServer(io);*/
-const httpServer=createServer(app);
-const io=new Server(httpServer,{
-  cors:{
-    origin:corsOrigin,
-    credentials:true,
-  }
-})
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: corsOrigin,
+    credentials: true,
+  },
+});
 createSocketServer();
 const port = process.env.PORT || 3001;
 

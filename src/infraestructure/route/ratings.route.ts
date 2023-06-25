@@ -6,26 +6,42 @@ import { checkJwt } from "../controller/session.ctrl";
 
 const routeRatings = Router();
 
-const ratingsRepo=new MongoRatingsRepository();
+const ratingsRepo = new MongoRatingsRepository();
 const ratingsUseCase = new RatingsUseCase(ratingsRepo);
 const ratingsCtrl = new RatingsController(ratingsUseCase);
 
 // (GET) getAllRatings()
-routeRatings.get("/ratings/all",checkJwt,ratingsCtrl.getAllRatingsCtrl); // ¡Verificada!
+routeRatings.get("/ratings/all", checkJwt, ratingsCtrl.getAllRatingsCtrl); // ¡Verificada!
 
 // (GET) getUsersWhoHaveRated(uuid: string)
-routeRatings.get("/rating/getraters/:uuid",checkJwt,ratingsCtrl.getUsersWhoHaveRatedCtrl); // ¡Verificada!
+routeRatings.get(
+  "/rating/getraters/:uuid",
+  checkJwt,
+  ratingsCtrl.getUsersWhoHaveRatedCtrl
+); // ¡Verificada!
 
 // (GET) getAverageValueRating(idRatedObject: string, ratingType: string)
-routeRatings.get("/rating/getaverage/:idRatedObject/:ratingType",checkJwt,ratingsCtrl.getAverageValueRatingCtrl);  // No acaba de ir.
+routeRatings.get(
+  "/rating/getaverage/:idRatedObject/:ratingType",
+  checkJwt,
+  ratingsCtrl.getAverageValueRatingCtrl
+); // No acaba de ir.
 
 // (GET) getRating(idRatedObject: string, ratingType: string)
-routeRatings.get("/rating/get/:idRatedObject/:ratingType",checkJwt,ratingsCtrl.getRatingCtrl); // ¡Verificada!
+routeRatings.get(
+  "/rating/get/:idRatedObject/:ratingType",
+  checkJwt,
+  ratingsCtrl.getRatingCtrl
+); // ¡Verificada!
 
 // (POST) insertRating(data: RatingsEntity)
-routeRatings.post("/rating/add",checkJwt,ratingsCtrl.insertRatingCtrl); // ¡Verificada!
+routeRatings.post("/rating/add", checkJwt, ratingsCtrl.insertRatingCtrl); // ¡Verificada!
 
 // (PUT) updateRating(uuid: string, data: RatingsEntity)
-routeRatings.put("/rating/update/:uuid",checkJwt,ratingsCtrl.updateRatingCtrl); // ¡Verificada!
+routeRatings.put(
+  "/rating/update/:uuid",
+  checkJwt,
+  ratingsCtrl.updateRatingCtrl
+); // ¡Verificada!
 
 export default routeRatings;
