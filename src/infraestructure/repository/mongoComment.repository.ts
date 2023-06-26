@@ -33,7 +33,7 @@ export class MongoCommentRepository implements CommentRepository {
       { _id: responseInsert._id },
       updatedData
     );
-    console.log(response);
+
     const responseItem = await PublicationModel.findOneAndUpdate(
       { _id: data.idPublicationComment },
       { $addToSet: { commentsPublication: responseInsert._id } },
@@ -55,7 +55,7 @@ export class MongoCommentRepository implements CommentRepository {
       { _id: responseInsert._id },
       updatedData
     );
-    console.log(response);
+
     const responseItem = await CommentModel.findOneAndUpdate(
       { _id: uuid },
       { $addToSet: { responseComment: responseInsert._id } },

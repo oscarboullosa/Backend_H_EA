@@ -45,7 +45,7 @@ export class MongoRatingsRepository implements RatingsRepository {
     ratingType: string
   ): Promise<any> {
     const result = await RatingsModel.findOne({ idRatedObject, ratingType });
-    console.log("RESULTADO: " + result);
+
     if (result) {
       return result.ratingAverage;
     }

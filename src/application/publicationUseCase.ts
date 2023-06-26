@@ -71,7 +71,7 @@ export class PublicationUseCase {
       photoPublication,
       commentsPublication,
     });
-    console.log("PerroSanxe" + publicationValue);
+
     const publication = await this.publicationRepository.insertPublication(
       publicationValue
     );
@@ -95,7 +95,6 @@ export class PublicationUseCase {
   };
 
   public getFollowingPost = async (numPage: string, uuid: string) => {
-    console.log(numPage, uuid);
     const numPublications = await this.publicationRepository.getFollowingPost(
       numPage,
       uuid
@@ -110,14 +109,12 @@ export class PublicationUseCase {
   };
 
   public getNumFollowingPost = async (uuid: string) => {
-    console.log(uuid);
     const numPublications =
       await this.publicationRepository.getNumFollowingPost(uuid);
     return numPublications;
   };
 
   public getLikes = async (uuid: string, numPage: string) => {
-    console.log(uuid);
     const publicationLikes = await this.publicationRepository.getLikes(
       uuid,
       numPage

@@ -27,9 +27,7 @@ export class MongoPublicationRepository implements PublicationRepository {
   }
 
   async insertPublication(data: PublicationEntity): Promise<any> {
-    console.log(data);
     const item = await PublicationModel.create(data);
-    console.log(item);
 
     // Actualizar la propiedad uuid con el valor de response._id
     const updatedData = {
@@ -42,13 +40,13 @@ export class MongoPublicationRepository implements PublicationRepository {
       { _id: item._id },
       updatedData
     );
-    console.log(response);
+
     return response;
   }
 
   async deletePublication(uuid: string): Promise<any> {
     const response = await PublicationModel.findOneAndRemove({ _id: uuid });
-    console.log(response);
+
     return response;
   }
 
@@ -68,10 +66,9 @@ export class MongoPublicationRepository implements PublicationRepository {
   }
 
   async getFollowingPost(numPage: string, uuid: string): Promise<any> {
-    console.log("numPage Publications" + numPage);
     // Obtener los IDs de los usuarios seguidos
     const user = await UserModel.findById({ _id: uuid }).exec();
-    console.log(user);
+
     const idsFollowedUsers = user?.followedUser;
     if (!idsFollowedUsers || idsFollowedUsers.length === 0) {
       return [];
@@ -94,7 +91,7 @@ export class MongoPublicationRepository implements PublicationRepository {
       .limit(publicationsByPage)
       .populate("idUser")
       .exec();
-    console.log(publications);
+
     return publications;
   }
 
@@ -110,7 +107,7 @@ export class MongoPublicationRepository implements PublicationRepository {
   async getNumFollowingPost(uuid: string): Promise<any> {
     // Obtener los IDs de los usuarios seguidos
     const user = await UserModel.findById({ _id: uuid }).exec();
-    console.log(user);
+
     const idsFollowedUsers = user?.followedUser;
     if (!idsFollowedUsers || idsFollowedUsers.length === 0) {
       return [];
@@ -131,7 +128,6 @@ export class MongoPublicationRepository implements PublicationRepository {
     })
       .sort({ createdAt: -1 })
       .exec();
-    console.log(publications);
     return publications.length.toString();
   }
 

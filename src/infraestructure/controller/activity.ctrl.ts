@@ -30,12 +30,11 @@ export class ActivityController {
     */
 
   public async getActivitiesByLocationCtrl({ params }: Request, res: Response) {
-    console.log("ENTRA AQUÍ");
     const { locationId = "" } = params;
     const response = await this.activityUseCase.getActivitiesByLocation(
       `${locationId}`
     );
-    console.log("RESPUESTA: " + response);
+
     const data = response ? response : "NOT_FOUND";
     res.send(data);
   }

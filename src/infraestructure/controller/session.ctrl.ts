@@ -23,7 +23,7 @@ const checkAdmin = (req: RequestExt, res: Response, next: NextFunction) => {
       next();
     }
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     res.status(400);
     res.send("INVALID_SESSION");
   }
@@ -42,7 +42,7 @@ const checkJwt = (req: RequestExt, res: Response, next: NextFunction) => {
       next();
     }
   } catch (e) {
-    console.log({ e });
+    console.error({ e });
     res.status(400);
     res.send("SESIÓN_NO_VÁLIDA");
   }

@@ -55,5 +55,5 @@ app.use(
 app.use(routeActivity);
 app.use(routeApplication);
 
-dbInit().then(() => console.log("Connection to MongoDB is ready"));
-app.listen(port, () => console.log(`Ready on port ${port}`));
+dbInit().then(() => console.warn("Connection to MongoDB is ready"));
+app.listen(port, () => console.warn(`Ready on port ${port}`));

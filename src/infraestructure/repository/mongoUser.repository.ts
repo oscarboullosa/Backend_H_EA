@@ -11,25 +11,23 @@ import { generateToken } from "../utils/jwt.handle";
 
 export class MongoUserRepository implements UserRepository {
   async getUserById(uuid: string): Promise<any> {
-    console.log(uuid);
     const response = await UserModel.findOne({ _id: uuid });
-    console.log(response);
+
     return response;
   }
 
   async getUserByEmail(mailUser: string): Promise<any> {
-    console.log(mailUser);
     const response = await UserModel.findOne({ mailUser: mailUser });
     if (!response) {
       return "NOT_FOUND_USER";
     }
-    console.log(response);
+
     return response;
   }
 
   async listUser(): Promise<any> {
     const response = await UserModel.find();
-    console.log(response);
+
     return response;
   }
 
@@ -37,12 +35,11 @@ export class MongoUserRepository implements UserRepository {
     const response = await UserModel.findOneAndUpdate({ _id: uuid }, data, {
       new: true,
     });
-    console.log(response);
+
     return response;
   }
 
   async registerUser(data: UserAuthEntity): Promise<any> {
-    console.log("Estoy en mongo");
     const {
       uuid,
       appUser,
@@ -62,7 +59,7 @@ export class MongoUserRepository implements UserRepository {
       followersUser,
     } = data;
     const checkIs = await UserModel.findOne({ mailUser });
-    console.log("Dentro del register, el mail que cojo es: " + mailUser);
+
     if (checkIs) return "ALREADY_USER";
     const passHash = await encrypt(passwordUser);
     const encryptedData = {
@@ -83,9 +80,9 @@ export class MongoUserRepository implements UserRepository {
       followedUser,
       followersUser,
     };
-    console.log(encryptedData);
+
     const user = await UserModel.create(encryptedData);
-    console.log("register user " + user);
+
     const encryptedUpdate = {
       uuid: user._id,
       appUser,
@@ -109,8 +106,6 @@ export class MongoUserRepository implements UserRepository {
       encryptedUpdate,
       { new: true }
     );
-    console.log("Update user " + response);
-    console.log("AtraveseMongo");
 
     return response;
   }
@@ -149,9 +144,9 @@ export class MongoUserRepository implements UserRepository {
 
   async loginFrontendGoogleUser(data: AuthEntity): Promise<any> {
     const { mailUser, passwordUser } = data;
-    console.log("Mail del user: " + mailUser);
+
     const checkIs = await UserModel.findOne({ mailUser: mailUser });
-    console.log("Repository response: " + checkIs);
+
     if (!checkIs) return "NOT_FOUND_USER";
     //const passwordHash = checkIs.passwordUser;
     //const isCorrect = await verified(passwordUser, passwordHash);
@@ -232,7 +227,7 @@ export class MongoUserRepository implements UserRepository {
       _id: uuid,
       followedUser: { $in: [uuidFollowed] },
     });
-    console.log("Estoy en mongoUser repository: " + user);
+
     if (!user) {
       return false;
     }
@@ -251,7 +246,7 @@ export class MongoUserRepository implements UserRepository {
       { $addToSet: { followedUser: new Types.ObjectId(uuid) } },
       { new: true }
     );
-    console.log(responseItem);
+
     return responseItem;
   }
 
@@ -266,17 +261,16 @@ export class MongoUserRepository implements UserRepository {
       { $addToSet: { followersUser: new Types.ObjectId(uuid) } },
       { new: true }
     );
-    console.log(responseItem);
+
     return responseItem;
   }
 
   async deleteFollower(uuid: string, uuidFollower: string): Promise<any> {
-    console.log("removeFOllower!!!");
     const responseItem = await UserModel.findOneAndUpdate(
       { _id: uuid },
       { $pull: { followersUser: new Types.ObjectId(uuidFollower) } },
       { new: true }
-    ).then((data) => console.log("resposta:", data));
+    ).then((data) => console.warn("resposta:", data));
     /* console.log(responseItem);
         if (!responseItem) {
             throw new Error('User not found');
@@ -286,8 +280,6 @@ export class MongoUserRepository implements UserRepository {
   }
 
   async deleteFollowed(uuid: string, uuidFollowed: string): Promise<any> {
-    console.log("Entramos al servicio");
-    console.log(uuidFollowed);
     const responseItem = await UserModel.findOneAndUpdate(
       { _id: uuid },
       { $pull: { followedUser: new Types.ObjectId(uuidFollowed) } },
@@ -304,7 +296,7 @@ export class MongoUserRepository implements UserRepository {
     if (!item) {
       throw new Error("User not found");
     }
-    console.log("Respuesta del que pierde un follower:" + item);
+
     return responseItem;
   }
 }

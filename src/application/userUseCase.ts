@@ -17,7 +17,7 @@ export class UserUseCase {
     if (!user) {
       throw new NotFoundError("User not found");
     }
-    console.log(user);
+
     return user;
   };
 
@@ -80,9 +80,9 @@ export class UserUseCase {
       followedUser,
       followersUser,
     });
-    console.log(userValue);
+
     const user = await this.userRepository.updateUser(uuid, userValue);
-    console.log(user);
+
     if (!user) {
       throw new NotFoundError("User not found");
     }
@@ -189,11 +189,11 @@ export class UserUseCase {
     passwordUser: string;
   }) => {
     const userAuthValue = new AuthValue({ mailUser, passwordUser });
-    console.log("El userAuthValue es: mailUser:" + mailUser);
+
     const loginUser = await this.userRepository.loginFrontendGoogleUser(
       userAuthValue
     );
-    console.log("Respuesta loginUser: " + loginUser);
+
     if (!loginUser) {
       throw new NotFoundError("User not found");
     }
@@ -232,7 +232,7 @@ export class UserUseCase {
 
   public checkFollower = async (uuid: string, uuidFollowed: string) => {
     const check = await this.userRepository.checkFollower(uuid, uuidFollowed);
-    console.log("Use case. True o false: " + check);
+
     return check;
   };
 
@@ -265,7 +265,7 @@ export class UserUseCase {
       uuid,
       uuidFollowed
     );
-    console.log("UseCase:" + followed);
+
     return followed;
   };
 }

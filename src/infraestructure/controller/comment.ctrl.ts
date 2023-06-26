@@ -25,7 +25,7 @@ export class CommentController {
     res: Response
   ) {
     const { uuidPublication = "", numPage } = params;
-    console.log(params);
+
     const response = await this.commentUseCase.getCommentPublicationByIdPag(
       uuidPublication,
       numPage

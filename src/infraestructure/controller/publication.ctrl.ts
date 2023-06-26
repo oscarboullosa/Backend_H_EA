@@ -23,7 +23,7 @@ export class PublicationController {
 
   public async getPublicationByIdCtrl({ params }: Request, res: Response) {
     const { uuid = "" } = params;
-    console.log(params);
+
     const response = await this.publicationUseCase.getPublicationById(
       `${uuid}`
     );
@@ -32,7 +32,7 @@ export class PublicationController {
 
   public async listPublicationCtrl(req: Request, res: Response) {
     const response = await this.publicationUseCase.listPublication();
-    console.log(response);
+
     res.send(response);
   }
 
@@ -48,11 +48,10 @@ export class PublicationController {
     try {
       if (req.file) {
         if (isImageFile(req.file)) {
-          console.log("FILE_YES");
           const publicationA = await this.publicationUseCase.getPublicationById(
             uuid
           );
-          console.log("Aqui1");
+
           const uploadResUp = await cloudinary.uploader.upload(req.file.path, {
             upload_preset: "publication",
           });
@@ -68,20 +67,18 @@ export class PublicationController {
               photoPublication: uploadResUp.secure_url,
               commentsPublication: commentsPublication,
             });
-            console.log("Hey");
+
             const response = await this.publicationUseCase.updatePublication(
               uuid,
               publication
             );
-            console.log(response);
+
             res.send(response);
-            console.log(response);
           }
         } else {
           res.send("NOT_SENDING_IMAGE");
         }
       } else {
-        console.log("How");
         const response = await this.publicationUseCase.updatePublication(
           uuid,
           req.body
@@ -89,7 +86,7 @@ export class PublicationController {
         res.send(response);
       }
     } catch (error) {
-      console.log("Update not working");
+      console.error("Update not working");
     }
   }
 
@@ -105,7 +102,6 @@ export class PublicationController {
     try {
       if (req.file) {
         if (isImageFile(req.file)) {
-          console.log("FILE_YES");
           const uploadRes = await cloudinary.uploader.upload(req.file.path, {
             upload_preset: "publication",
           });
@@ -119,26 +115,24 @@ export class PublicationController {
               photoPublication: uploadRes.secure_url,
               commentsPublication: commentsPublication,
             });
-            console.log("Hey");
+
             const response = await this.publicationUseCase.insertPublication(
               publication
             );
-            console.log(response);
+
             res.send(response);
-            console.log(response);
           }
         } else {
           res.send("NOT_SENDING_IMAGE");
         }
       } else {
-        console.log("How");
         const response = await this.publicationUseCase.insertPublication(
           req.body
         );
         res.send(response);
       }
     } catch (error) {
-      console.log("Insert not working");
+      console.error("Insert not working");
     }
   }
 
@@ -152,7 +146,7 @@ export class PublicationController {
       if (publication) {
         const photoUrl = publication.photoPublication;
         let i = photoUrl.length;
-        console.log("destroy");
+
         while (i > 0) {
           await cloudinary.uploader.destroy(photoUrl);
           i--;
@@ -183,7 +177,6 @@ export class PublicationController {
   }
 
   public async getFollowingPostCtrl({ params }: Request, res: Response) {
-    console.log(params);
     const { numPage = "", uuid = "" } = params;
     const response = await this.publicationUseCase.getFollowingPost(
       numPage,
@@ -195,7 +188,6 @@ export class PublicationController {
 
   // BEREAL
   public async getOwnPostsCtrl({ params }: Request, res: Response) {
-    console.log(params);
     const { uuid = "" } = params;
     const response = await this.publicationUseCase.getOwnPosts(uuid);
     const data = response ? response : "NOT_FOUND";
@@ -203,7 +195,6 @@ export class PublicationController {
   }
 
   public async getNumFollowingPostCtrl({ params }: Request, res: Response) {
-    console.log(params);
     const { uuid = "" } = params;
     const response = await this.publicationUseCase.getNumFollowingPost(uuid);
     const data = response ? response : "NOT_FOUND";
@@ -211,7 +202,6 @@ export class PublicationController {
   }
 
   public async getLikesCtrl({ params }: Request, res: Response) {
-    console.log(params);
     const { uuid = "", numPage = "" } = params;
     const response = await this.publicationUseCase.getLikes(uuid, numPage);
     const data = response ? response : "NOT_FOUND";

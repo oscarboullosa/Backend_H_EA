@@ -39,21 +39,21 @@ export class UserController {
 
   public async getUserByIdCtrl({ params }: Request, res: Response) {
     const { uuid = "" } = params;
-    console.log(params);
+
     const response = await this.userUseCase.getUserById(`${uuid}`);
     res.send(response);
   }
 
   public async getUserByEmailCtrl({ params }: Request, res: Response) {
     const { mailUser = "" } = params;
-    console.log(params);
+
     const response = await this.userUseCase.getUserByEmail(`${mailUser}`);
     res.send(response);
   }
 
   public async listUserCtrl(req: Request, res: Response) {
     const response = await this.userUseCase.listUser();
-    console.log(response);
+
     res.send(response);
   }
 
@@ -77,7 +77,6 @@ export class UserController {
     try {
       if (req.file) {
         if (isImageFile(req.file)) {
-          console.log("FILE_YES");
           const userA = await this.userUseCase.getUserById(uuid);
           const uploadResUp = await cloudinary.uploader.upload(req.file.path, {
             upload_preset: "photoUser",
@@ -101,23 +100,21 @@ export class UserController {
               followersUser: followersUser,
               followedUser: followedUser,
             });
-            console.log("Hey");
+
             const response = await this.userUseCase.updateUser(uuid, user);
-            console.log(response);
+
             res.send(response);
-            console.log(response);
           }
         } else {
           res.send("NOT_SENDING_IMAGE");
         }
       } else {
-        console.log("How");
         const response = await this.userUseCase.updateUser(uuid, req.body);
-        console.log(response);
+
         res.send(response);
       }
     } catch (error) {
-      console.log("UpdateUserCtrl not working");
+      console.error("UpdateUserCtrl not working");
     }
   }
 
@@ -142,7 +139,6 @@ export class UserController {
     try {
       if (req.file) {
         if (isImageFile(req.file)) {
-          console.log("FILE_YES");
           const uploadRes = await cloudinary.uploader.upload(req.file.path, {
             upload_preset: "photoUser",
           });
@@ -166,28 +162,25 @@ export class UserController {
               followersUser: followersUser,
               followedUser: followedUser,
             });
-            console.log("Hey");
+
             const response = await this.userUseCase.registerUser(user);
-            console.log(response);
+
             res.send(response);
-            console.log(response);
           }
         } else {
           res.send("NOT_SENDING_AN_IMAGE");
         }
       } else {
-        console.log("How");
         const responseUser = await this.userUseCase.registerUser(req.body);
         if (responseUser === "ALREADY_USER") {
           res.status(403);
           res.send(responseUser);
-          console.log(res.status);
         } else {
           res.send(responseUser);
         }
       }
     } catch (error) {
-      console.log("RegisterUserCtrl not working");
+      console.error("RegisterUserCtrl not working");
     }
 
     //const user = response as UserAuthEntity;
@@ -213,14 +206,13 @@ export class UserController {
     if (responseUser === "PASSWORD_INCORRECT") {
       res.status(403);
       res.send(responseUser);
-      console.log(res.status);
     } else if (responseUser === "USER_NOT_ADMIN") {
       res.status(406);
       res.send(responseUser);
     } else if (responseUser === "NOT_FOUND_USER") {
       res.status(404);
       res.send(responseUser);
-      console.log("not found user " + res.status);
+      console.error("not found user " + res.status);
     } else {
       res.send(responseUser);
     }
@@ -232,11 +224,10 @@ export class UserController {
     if (responseUser === "PASSWORD_INCORRECT") {
       res.status(403);
       res.send(responseUser);
-      console.log(res.status);
     } else if (responseUser === "NOT_FOUND_USER") {
       res.status(404);
       res.send(responseUser);
-      console.log("not found user " + res.status);
+      console.error("not found user " + res.status);
     } else {
       res.send(responseUser);
     }
@@ -244,11 +235,11 @@ export class UserController {
 
   public async loginFrontendGoogleUserCtrl({ body }: Request, res: Response) {
     const responseUser = await this.userUseCase.loginFrontendGoogleUser(body);
-    console.log("Respuesta del login: " + responseUser);
+    console.warn("Respuesta del login: " + responseUser);
     if (responseUser === "NOT_FOUND_USER") {
       res.status(404);
       res.send(responseUser);
-      console.log("not found user " + res.status);
+      console.error("not found user " + res.status);
     } else {
       res.send(responseUser);
     }
@@ -325,12 +316,10 @@ export class UserController {
   }
 
   public async deleteFollowedCtrl({ body }: Request, res: Response) {
-    console.log(body);
     const { uuid, uuidFollowed } = body;
-    console.log(uuid);
-    console.log(uuidFollowed);
+
     const response = await this.userUseCase.deleteFollowed(uuid, uuidFollowed);
-    console.log("Ctrl: " + response);
+    console.warn("Ctrl: " + response);
     res.send(response);
   }
 }
