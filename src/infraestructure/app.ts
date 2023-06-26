@@ -20,10 +20,14 @@ import {
 import http from "http";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { createSocketServer } from "./chat/server";
+import logger from "./utils/logger";
+import socket from "./chat/server";
 
+const porto=3000;
+const host="147.83.7.158"
 const corsOrigin = "*";
 const app = express();
+const httpServer = createServer(app);
 app.use(cors());
 app.use(express.json());
 
@@ -32,14 +36,12 @@ const socket = require('socket.io');
 const io = socket(server);
 
 createSocketServer(io);*/
-const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: corsOrigin,
     credentials: true,
   },
 });
-createSocketServer();
 const port = process.env.PORT || 3001;
 
 //app.use(uploadUser.single("photoUser"),routeUser,deleteLocalFileUser as express.RequestHandler);
@@ -57,3 +59,8 @@ app.use(routeApplication);
 
 dbInit().then(() => console.log("Connection to MongoDB is ready"));
 app.listen(port, () => console.log(`Ready on port ${port}`));
+httpServer.listen(porto, host, () => {
+  logger.info(`http://${host}:${port}`);
+
+  socket({ io });
+});
