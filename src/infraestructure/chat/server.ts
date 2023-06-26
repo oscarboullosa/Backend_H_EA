@@ -1,86 +1,80 @@
-import express from "express";
-import http from "http";
-import { Server } from "socket.io";
-import { createServer } from "http";
-import socketIO from 'socket.io'
+import { nanoid } from "nanoid";
+import { Server, Socket } from "socket.io";
+import logger from "../utils/logger"
 
-const corsOrigin = "*";
-const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: corsOrigin,
-    credentials: true,
+const EVENTS = {
+  connection: "connection",
+  CLIENT: {
+    CREATE_ROOM: "CREATE_ROOM",
+    SEND_ROOM_MESSAGE: "SEND_ROOM_MESSAGE",
+    JOIN_ROOM: "JOIN_ROOM",
   },
-});
-interface Room {
-  [roomId: string]: string[]; // Array of socket IDs
-}
+  SERVER: {
+    ROOMS: "ROOMS",
+    JOINED_ROOM: "JOINED_ROOM",
+    ROOM_MESSAGE: "ROOM_MESSAGE",
+  },
+};
 
-const rooms: Room = {};
-type ChatMessage = {
-  message: string
-  from: string
-}
-export function createSocketServer() {
-  console.log("Ando aqui");
-  console.log("io:    " + io);
-  io.on("connection", (socket: any) => {
-    console.log("connection");
+const rooms: Record<string, { name: string }> = {};
 
-    socket.on("join room", (roomID: any) => {
-      console.log("join room");
+function socket({ io }: { io: Server }) {
+  logger.info(`Sockets enabled`);
 
-      if (rooms[roomID]) {
-        console.log("RoomId: " + roomID);
-        console.log("SocketID: " + socket.id);
-        rooms[roomID].push(socket.id);
-        console.log("rooms[roomID].push(socket.id): " + rooms[roomID]);
-      } else {
-        console.log("Initiating peer create a new room");
-        rooms[roomID] = [socket.id];
-        console.log("RoomIDelse: " + roomID);
+  io.on(EVENTS.connection, (socket: Socket) => {
+    logger.info(`User connected ${socket.id}`);
+
+    socket.emit(EVENTS.SERVER.ROOMS, rooms);
+
+    /*
+     * When a user creates a new room
+     */
+    socket.on(EVENTS.CLIENT.CREATE_ROOM, ( {roomName} ) => {
+      console.log({ roomName });
+      // create a roomId
+      const roomId = nanoid();
+      // add a new room to the rooms object
+      rooms[roomId] = {
+        name: roomName,
+      };
+
+      socket.join(roomId);
+
+      // broadcast an event saying there is a new room
+      socket.broadcast.emit(EVENTS.SERVER.ROOMS, rooms);
+
+      // emit back to the room creator with all the rooms
+      socket.emit(EVENTS.SERVER.ROOMS, rooms);
+      // emit event back the room creator saying they have joined a room
+      socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
+    });
+
+    /*
+     * When a user sends a room message
+     */
+
+    socket.on(
+      EVENTS.CLIENT.SEND_ROOM_MESSAGE,
+      ({ roomId, message, username }) => {
+        const date = new Date();
+
+        socket.to(roomId).emit(EVENTS.SERVER.ROOM_MESSAGE, {
+          message,
+          username,
+          time: `${date.getHours()}:${date.getMinutes()}`,
+        });
       }
+    );
 
-      const otherUser = rooms[roomID].find((id) => id !== socket.id);
-      console.log("OtherUser: " + otherUser);
+    /*
+     * When a user joins a room
+     */
+    socket.on(EVENTS.CLIENT.JOIN_ROOM, (roomId) => {
+      socket.join(roomId);
 
-      if (otherUser) {
-        socket.emit("other user", otherUser);
-        socket.to(otherUser).emit("user joined", socket.id);
-        console.log("Emitted");
-      }
+      socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
     });
-
-    socket.on("offer", (payload: any) => {
-      console.log("Offers connection");
-      io.to(payload.target).emit("offer", payload);
-    });
-
-    socket.on("answer", (payload: any) => {
-      console.log("Accepts");
-      io.to(payload.target).emit("answer", payload);
-    });
-
-    socket.on("ice-candidate", (incoming: any) => {
-      console.log("ICE");
-      io.to(incoming.target).emit("ice-candidate", incoming.candidate);
-    });
-    socket.on('connection', (socket: socketIO.Socket) => {
-      console.log('a user connected : ' + socket.id)
-
-      socket.on('disconnect', function () {
-          console.log('socket disconnected : ' + socket.id)
-      })
-
-      socket.on('chatMessage', function (chatMessage: ChatMessage) {
-          socket.broadcast.emit('chatMessage', chatMessage)
-      })
-  })
   });
-
-  httpServer.listen(3000, () =>
-    console.log("Server is up and running on Port 3000")
-  );
 }
 
+export default socket;
