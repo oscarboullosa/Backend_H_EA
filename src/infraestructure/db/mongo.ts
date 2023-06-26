@@ -1,10 +1,10 @@
 import { connect } from "mongoose";
 
-const DB_URI = `${process.env.DB_URI}`
+const DB_URI = `${process.env.DB_URI}`;
 
 const dbInit = async () => {
-    await connect(DB_URI)
-    console.log('Waiting...')
-}
+  await connect(DB_URI);
+  console.log("Waiting...");
+};
 
-export default dbInit
+export default dbInit;
