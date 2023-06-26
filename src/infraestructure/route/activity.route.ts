@@ -42,6 +42,11 @@ routeActivity.get(
   activityCtrl.getFollowedUsersActivitiesCtrl
 );
 
+routeActivity.get("/activity/all/:uuid",checkJwt,activityCtrl.getAllActivitiesByUserCtrl);
+routeActivity.get("/activity/all/created/:uuid",checkJwt,activityCtrl.getAllActivitiesCreatedByUserCtrl);
+routeActivity.get("/activity/mymonth/:uuid/:date",checkJwt,activityCtrl.getActivitiesByUserAndMonthCtrl);
+routeActivity.get("/activity/last6weeks/:uuid/",checkJwt,activityCtrl.getActivitiesByUserLast6WeeksCtrl);
+
 routeActivity.post("/activity/add", checkJwt, activityCtrl.insertActivityCtrl); //OK
 
 routeActivity.put("/activity/:uuid", checkJwt, activityCtrl.updateActivityCtrl); //OK
