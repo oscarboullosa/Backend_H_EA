@@ -2,6 +2,7 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import { createServer } from "http";
+import socketIO from 'socket.io'
 
 const corsOrigin = "*"
 const app = express();
@@ -17,7 +18,10 @@ interface Room {
 }
 
 const rooms: Room = {};
-
+type ChatMessage = {
+  message: string
+  from: string
+}
 export function createSocketServer() {
   console.log("Ando aqui");
   console.log("io:    " + io);
@@ -62,8 +66,20 @@ export function createSocketServer() {
       console.log("ICE");
       io.to(incoming.target).emit("ice-candidate", incoming.candidate);
     });
+    socket.on('connection', (socket: socketIO.Socket) => {
+      console.log('a user connected : ' + socket.id)
+
+      socket.on('disconnect', function () {
+          console.log('socket disconnected : ' + socket.id)
+      })
+
+      socket.on('chatMessage', function (chatMessage: ChatMessage) {
+          socket.broadcast.emit('chatMessage', chatMessage)
+      })
+  })
   });
 
   httpServer.listen(3000,()=>
   console.log("Server is up and running on Port 3000"))
 }
+
