@@ -66,7 +66,9 @@ function socket({ io }: { io: Server }) {
 
     socket.on(
       EVENTS.CLIENT.SEND_ROOM_MESSAGE,
-      ({ roomId, message, username }) => {
+      async ({ roomId, message, username }) => {
+        const { default: nanoid } = await import("nanoid");
+
         const date = new Date();
 
         socket.to(roomId).emit(EVENTS.SERVER.ROOM_MESSAGE, {
@@ -86,6 +88,7 @@ function socket({ io }: { io: Server }) {
       socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
     });
   });
+  
 }
 
 export default socket;

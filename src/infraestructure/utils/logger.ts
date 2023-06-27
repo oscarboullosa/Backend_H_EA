@@ -1,5 +1,6 @@
 import logger from "pino";
 import dayjs from "dayjs";
+import prettifier from "pino-pretty";
 
 const log = logger({
   base: {

@@ -19,6 +19,12 @@ export class ActivityController {
 
     this.getActivitiesByLocationCtrl =
       this.getActivitiesByLocationCtrl.bind(this);
+    
+      this.getAllActivitiesByUserCtrl=this.getAllActivitiesByUserCtrl.bind(this);
+      this.getAllActivitiesCreatedByUserCtrl=this.getAllActivitiesCreatedByUserCtrl.bind(this);
+      this.getActivitiesByUserAndMonthCtrl=this.getActivitiesByUserAndMonthCtrl.bind(this);
+      this.getActivitiesByUserLast6WeeksCtrl=this.getActivitiesByUserLast6WeeksCtrl.bind(this);
+      this.getActivitiesByMonthAndYearCtrl=this.getActivitiesByMonthAndYearCtrl.bind(this);
   }
 
   /*
@@ -99,6 +105,10 @@ export class ActivityController {
   ) {
     const { uuid, date } = params;
     const startDate = new Date(date);
+    startDate.setUTCHours(0, 0, 0, 0); // Establecer hora en UTC a las 00:00:00
+    startDate.setUTCDate(startDate.getUTCDate() + 1);
+    console.log("controller hour received:", date);
+    console.log("controller hour set:", startDate);
     const response = await this.activityUseCase.getActivitiesByUserAndWeek(
       uuid,
       startDate
@@ -113,6 +123,8 @@ export class ActivityController {
   ) {
     const { uuid, numPage, date } = params;
     const startDate = new Date(date);
+    startDate.setUTCHours(0, 0, 0, 0); // Establecer hora en UTC a las 00:00:00
+    startDate.setUTCDate(startDate.getUTCDate() + 1);
     const response = await this.activityUseCase.getFollowedUsersActivities(
       uuid,
       numPage,
@@ -121,4 +133,44 @@ export class ActivityController {
     const data = response ? response : "NOT_FOUND";
     res.send(data);
   }
+  public async getAllActivitiesByUserCtrl({params}:Request,res:Response){
+    const {uuid}=params;
+    console.log("controller",uuid);
+    const response=await this.activityUseCase.getAllActivitiesByUser(uuid); 
+    const data=response ? response:"NOT_FOUND";
+    res.send(data);
+  }
+
+  public async getAllActivitiesCreatedByUserCtrl({params}:Request,res:Response){
+      const {uuid}=params;
+      console.log("controller",uuid);
+      const response=await this.activityUseCase.getAllActivitiesCreatedByUser(uuid); 
+      const data=response ? response:"NOT_FOUND";
+      res.send(data);
+  }
+
+  public async getActivitiesByUserAndMonthCtrl({params}:Request,res:Response){
+    const {uuid,date}=params;
+    const startDate = new Date(date);
+    startDate.setUTCHours(0, 0, 0, 0); // Establecer hora en UTC a las 00:00:00
+    startDate.setUTCDate(startDate.getUTCDate() + 1);
+    const response=await this.activityUseCase.getActivitiesByUserAndMonth(uuid,startDate); 
+    const data=response ? response:"NOT_FOUND";
+    res.send(data);
+}
+
+  public async getActivitiesByUserLast6WeeksCtrl({params}:Request,res:Response){
+    const {uuid}=params;
+    const response=await this.activityUseCase.getActivitiesByUserLast6Weeks(uuid); 
+    const data=response ? response:"NOT_FOUND";
+    res.send(data);
+  }
+
+  public async getActivitiesByMonthAndYearCtrl({params}:Request,res:Response){
+    const {uuid,month,year}=params;
+    const response=await this.activityUseCase.getActivitiesByMonthAndYear(uuid,month,year); 
+    const data=response ? response:"NOT_FOUND";
+    res.send(data);
+}
+
 }
