@@ -22,6 +22,7 @@ function socket({ io }: { io: Server }) {
   log.info(`Sockets enabled`);
 
   io.on(EVENTS.connection, (socket: Socket) => {
+    console.log("Socket connected:", socket.connected);
     log.info(`User connected ${socket.id}`);
     socket.emit(EVENTS.SERVER.ROOMS, rooms);
     console.log("EL SIGUIENTE CONSOLE LOG ES LAS ROOMS")
