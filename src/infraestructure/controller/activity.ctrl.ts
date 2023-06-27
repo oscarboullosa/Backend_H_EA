@@ -24,7 +24,7 @@ export class ActivityController {
       this.getAllActivitiesCreatedByUserCtrl=this.getAllActivitiesCreatedByUserCtrl.bind(this);
       this.getActivitiesByUserAndMonthCtrl=this.getActivitiesByUserAndMonthCtrl.bind(this);
       this.getActivitiesByUserLast6WeeksCtrl=this.getActivitiesByUserLast6WeeksCtrl.bind(this);
-  
+      this.getActivitiesByMonthAndYearCtrl=this.getActivitiesByMonthAndYearCtrl.bind(this);
   }
 
   /*
@@ -152,6 +152,8 @@ export class ActivityController {
   public async getActivitiesByUserAndMonthCtrl({params}:Request,res:Response){
     const {uuid,date}=params;
     const startDate = new Date(date);
+    startDate.setUTCHours(0, 0, 0, 0); // Establecer hora en UTC a las 00:00:00
+    startDate.setUTCDate(startDate.getUTCDate() + 1);
     const response=await this.activityUseCase.getActivitiesByUserAndMonth(uuid,startDate); 
     const data=response ? response:"NOT_FOUND";
     res.send(data);
@@ -163,5 +165,12 @@ export class ActivityController {
     const data=response ? response:"NOT_FOUND";
     res.send(data);
   }
+
+  public async getActivitiesByMonthAndYearCtrl({params}:Request,res:Response){
+    const {uuid,month,year}=params;
+    const response=await this.activityUseCase.getActivitiesByMonthAndYear(uuid,month,year); 
+    const data=response ? response:"NOT_FOUND";
+    res.send(data);
+}
 
 }

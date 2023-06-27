@@ -197,4 +197,9 @@ export class ActivityUseCase {
       return activities;
   }
 
+  public getActivitiesByMonthAndYear=async(uuid: string, month: string, year: string)=>{
+    const activities=await this.activityRepository.getActivitiesByMonthAndYear(uuid,month,year);
+    return activities;
+}
+
 }

@@ -1,8 +1,9 @@
-import logger from "pino";
+import pino from "pino";
 import dayjs from "dayjs";
+import prettifier from "pino-pretty";
 
-const log = logger({
-  prettyPrint: true,
+const log = pino({
+  prettifier,
   base: {
     pid: false,
   },

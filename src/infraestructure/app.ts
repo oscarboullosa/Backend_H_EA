@@ -27,7 +27,8 @@ const porto=3000;
 const host="147.83.7.158"
 const corsOrigin = "*";
 const app = express();
-const httpServer = createServer(app);
+const appo=express();
+const httpServer = createServer(appo);
 app.use(cors());
 app.use(express.json());
 
@@ -59,8 +60,7 @@ app.use(routeApplication);
 
 dbInit().then(() => console.log("Connection to MongoDB is ready"));
 app.listen(port, () => console.log(`Ready on port ${port}`));
-httpServer.listen(porto, host, () => {
-  logger.info(`http://${host}:${port}`);
-
+httpServer.listen(9876, () => {
+  console.log(`http://147.83.7.158:9876`);
   socket({ io });
 });

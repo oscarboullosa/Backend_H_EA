@@ -1,6 +1,5 @@
-import { nanoid } from "nanoid";
 import { Server, Socket } from "socket.io";
-import logger from "../utils/logger"
+import logger from "../utils/logger";
 
 const EVENTS = {
   connection: "connection",
@@ -18,10 +17,10 @@ const EVENTS = {
 
 const rooms: Record<string, { name: string }> = {};
 
-function socket({ io }: { io: Server }) {
+async function socket({ io }: { io: Server }) {
   logger.info(`Sockets enabled`);
 
-  io.on(EVENTS.connection, (socket: Socket) => {
+  io.on(EVENTS.connection, async (socket: Socket) => {
     logger.info(`User connected ${socket.id}`);
 
     socket.emit(EVENTS.SERVER.ROOMS, rooms);
@@ -29,7 +28,8 @@ function socket({ io }: { io: Server }) {
     /*
      * When a user creates a new room
      */
-    socket.on(EVENTS.CLIENT.CREATE_ROOM, ( {roomName} ) => {
+    socket.on(EVENTS.CLIENT.CREATE_ROOM, async ({ roomName }) => {
+      const { nanoid } = await import("nanoid");
       console.log({ roomName });
       // create a roomId
       const roomId = nanoid();
@@ -55,7 +55,9 @@ function socket({ io }: { io: Server }) {
 
     socket.on(
       EVENTS.CLIENT.SEND_ROOM_MESSAGE,
-      ({ roomId, message, username }) => {
+      async ({ roomId, message, username }) => {
+        const { default: nanoid } = await import("nanoid");
+
         const date = new Date();
 
         socket.to(roomId).emit(EVENTS.SERVER.ROOM_MESSAGE, {
@@ -75,6 +77,7 @@ function socket({ io }: { io: Server }) {
       socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
     });
   });
+  
 }
 
 export default socket;

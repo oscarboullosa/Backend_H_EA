@@ -31,6 +31,7 @@ export interface ActivityRepository {
   getAllActivitiesCreatedByUser(currentUserId:string): Promise<any>;
   getActivitiesByUserAndMonth(uuid: string, startDate: Date): Promise<ActivityEntity[]|null>
   getActivitiesByUserLast6Weeks(currentUserId:string): Promise<any>;
+  getActivitiesByMonthAndYear(currentUserId:string, month: string, year:string): Promise<any>;
 
 
 }

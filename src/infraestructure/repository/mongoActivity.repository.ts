@@ -192,8 +192,8 @@ async getAllActivitiesCreatedByUser(currentUserId: string): Promise<any> {
 
 async getActivitiesByUserAndMonth(uuid: string, startDate: Date): Promise<any> {
     const startOfMonth = new Date(startDate);
-    startOfMonth.setDate(startOfMonth.getDate() - 30); // Restar 30 días a la fecha de inicio
-    startDate.setHours(23, 59, 59, 999);
+    startOfMonth.setUTCDate(startOfMonth.getUTCDate() - 30); // Restar 30 días a la fecha de inicio
+    startDate.setUTCHours(23, 59, 59, 999);
 
     const activities = await ActivityModel.find({ participantsActivity: uuid }).exec();
     const activitiesOfMonth = activities.filter((activity) =>
@@ -205,14 +205,14 @@ async getActivitiesByUserAndMonth(uuid: string, startDate: Date): Promise<any> {
 
 async getActivitiesByUserLast6Weeks(uuid: string): Promise<number[]> {
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-    const dayOfWeek = currentDate.getDay();
+    currentDate.setUTCHours(0, 0, 0, 0);
+    const dayOfWeek = currentDate.getUTCDay();
     console.log("dayofWeek", dayOfWeek);
     // Ajustar el día de la semana
     const adjustedDayOfWeek = (dayOfWeek + 6) % 7; // Convertir domingo (0) a 6 y desplazar los demás días
 
     // Obtener el primer día (lunes) de la semana
-    currentDate.setDate(currentDate.getDate() - adjustedDayOfWeek); //ponemos la currentDate a lunes de la semana actual
+    currentDate.setUTCDate(currentDate.getUTCDate() - adjustedDayOfWeek); //ponemos la currentDate a lunes de la semana actual
     console.log("start of week", currentDate);
 
     const activities = await ActivityModel.find({ participantsActivity: uuid }).exec();
@@ -221,10 +221,10 @@ async getActivitiesByUserLast6Weeks(uuid: string): Promise<number[]> {
 
     for (let i = 0; i < 6; i++) {
       const startOfWeek = new Date(currentDate);
-      startOfWeek.setDate(startOfWeek.getDate() - i * 7); // Restar i semanas a la fecha actual
+      startOfWeek.setUTCDate(startOfWeek.getUTCDate() - i * 7); // Restar i semanas a la fecha actual
       const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
-      endOfWeek.setHours(23, 59, 59, 999);
+      endOfWeek.setUTCDate(startOfWeek.getUTCDate() + 6);
+      endOfWeek.setUTCHours(23, 59, 59, 999);
 
       const activitiesOfWeek = activities.filter((activity) =>
         activity.dateActivity >= startOfWeek && activity.dateActivity <= endOfWeek
@@ -236,5 +236,33 @@ async getActivitiesByUserLast6Weeks(uuid: string): Promise<number[]> {
     return activitiesByWeek;
   }
 
+  async getActivitiesByMonthAndYear(uuid: string, month: string, year: string): Promise<number[]> {
+    const firstDayOfMonth = new Date(parseInt(year), parseInt(month), 1); // Obtener el primer día del mes y año especificados
+    const currentDate = new Date(firstDayOfMonth);
+    currentDate.setUTCHours(0, 0, 0, 0);
+    
+    // Obtener el primer día (lunes) de la semana
+  
+    const activities = await ActivityModel.find({ participantsActivity: uuid }).exec();
+  
+    const activitiesByWeek: number[] = [0, 0, 0, 0]; // Vector con 4 espacios, inicializados en 0
+  
+    for (let i = 0; i < 4; i++) { // Iterar solo 4 veces para las 4 semanas del mes
+      const startOfWeek = new Date(currentDate);
+      startOfWeek.setUTCDate(startOfWeek.getUTCDate() - i * 7); // Restar i semanas a la fecha actual
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setUTCDate(startOfWeek.getUTCDate() + 6);
+      endOfWeek.setUTCHours(23, 59, 59, 999);
+  
+      const activitiesOfWeek = activities.filter((activity) =>
+        activity.dateActivity >= startOfWeek && activity.dateActivity <= endOfWeek
+      );
+  
+      activitiesByWeek[i] = activitiesOfWeek.length; // Guardar el número de actividades en la semana i
+    }
+  
+    return activitiesByWeek;
+  }
+  
 
 }
