@@ -20,7 +20,6 @@ import {
 import http from "http";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import logger from "./utils/logger";
 import socket from "./chat/server";
 
 const porto=3000;

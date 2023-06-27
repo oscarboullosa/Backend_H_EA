@@ -23,37 +23,43 @@ function socket({ io }: { io: Server }) {
 
   io.on(EVENTS.connection, (socket: Socket) => {
     log.info(`User connected ${socket.id}`);
-
     socket.emit(EVENTS.SERVER.ROOMS, rooms);
+    console.log("EL SIGUIENTE CONSOLE LOG ES LAS ROOMS")
+    console.dir(rooms)
 
     /*
      * When a user creates a new room
      */
     socket.on(EVENTS.CLIENT.CREATE_ROOM, ({ roomName }) => {
-      console.log({ roomName });
+      console.log("EL SIGUIENTE CONSOLE LOG ES ROOMNAME")
+      console.log(roomName);
       // create a roomId
       const roomId = uuidv4();
+      console.log("EL SIGUIENTE LOG ES LA ROOMID")
+      console.dir(roomId)
       // add a new room to the rooms object
       rooms[roomId] = {
         name: roomName,
       };
       console.log("Room ID: "+roomId);
+      console.log("RoomSSS: "+JSON.stringify(rooms[roomId]));
       if (io.sockets.adapter.rooms.has(roomId)) {
         // action when room already exists
       } else {
-        console.log(socket.id + 'tried to join ' + roomId + 'but the room does not exist.');
+        console.log(socket.id + 'tried to join ' + roomId + ' but the room does not exist.');
         // action when room is new
       };
       socket.join(roomId);
+      console.log(roomId)
       console.log(`User ${socket.id} joined room ${roomId}`);
 
       // broadcast an event saying there is a new room
       socket.broadcast.emit(EVENTS.SERVER.ROOMS, rooms);
-      console.log(`Broadcasted new room event to all users`);
+      console.log(`Broadcasted new room event to all users: `+JSON.stringify(rooms));
 
       // emit back to the room creator with all the rooms
       socket.emit(EVENTS.SERVER.ROOMS, rooms);
-      console.log(`Emitted all rooms to the room creator`);
+      console.log(`Emitted all rooms to the room creator: `+JSON.stringify(rooms));
 
       // emit event back to the room creator saying they have joined a room
       socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
