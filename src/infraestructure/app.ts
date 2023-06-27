@@ -21,30 +21,32 @@ import http from "http";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import socket from "./chat/server";
+import config from "./config/default";
+import log from "./utils/logger";
 
-const porto=3000;
-const host="147.83.7.158"
-const corsOrigin = "*";
+const { port, host, corsOrigin } = config;
+
 const app = express();
-const appo=express();
-const httpServer = createServer(appo);
 app.use(cors());
 app.use(express.json());
 
-/*const server = http.createServer(app);
-const socket = require('socket.io');
-const io = socket(server);
+dbInit().then(() => console.log("Connection to MongoDB is ready"));
 
-createSocketServer(io);*/
+app.listen(port, () => console.log(`Hey! Listening on port ${port}`));
+
+const httpServer = createServer(app);
+
 const io = new Server(httpServer, {
   cors: {
     origin: corsOrigin,
     credentials: true,
   },
 });
-const port = process.env.PORT || 3001;
 
-//app.use(uploadUser.single("photoUser"),routeUser,deleteLocalFileUser as express.RequestHandler);
+app.get("/", (_, res) =>
+  res.send(`Server is up and running version 1.0.0`)
+);
+
 app.use(uploadUser.single("photoUser"), routeUser);
 app.use(routeLocation);
 app.use(routeComment);
@@ -57,9 +59,9 @@ app.use(
 app.use(routeActivity);
 app.use(routeApplication);
 
-dbInit().then(() => console.log("Connection to MongoDB is ready"));
-app.listen(port, () => console.log(`Ready on port ${port}`));
-httpServer.listen(9876, () => {
-  console.log(`http://147.83.7.158:9876`);
+httpServer.listen(port, host, () => {
+  log.info(`🚀 Server version 1.0.0 is listening 🚀`);
+  log.info(`http://${host}:${port}`);
+
   socket({ io });
 });
