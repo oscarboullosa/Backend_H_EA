@@ -1,6 +1,6 @@
-import { nanoid } from "nanoid";
 import { Server, Socket } from "socket.io";
-import logger from "../utils/logger"
+import { v4 as uuidv4 } from "uuid";
+import log from "../utils/logger";
 
 const EVENTS = {
   connection: "connection",
@@ -19,34 +19,45 @@ const EVENTS = {
 const rooms: Record<string, { name: string }> = {};
 
 function socket({ io }: { io: Server }) {
-  logger.info(`Sockets enabled`);
+  log.info(`Sockets enabled`);
 
   io.on(EVENTS.connection, (socket: Socket) => {
-    logger.info(`User connected ${socket.id}`);
+    log.info(`User connected ${socket.id}`);
 
     socket.emit(EVENTS.SERVER.ROOMS, rooms);
 
     /*
      * When a user creates a new room
      */
-    socket.on(EVENTS.CLIENT.CREATE_ROOM, ( {roomName} ) => {
+    socket.on(EVENTS.CLIENT.CREATE_ROOM, ({ roomName }) => {
       console.log({ roomName });
       // create a roomId
-      const roomId = nanoid();
+      const roomId = uuidv4();
       // add a new room to the rooms object
       rooms[roomId] = {
         name: roomName,
       };
-
+      console.log("Room ID: "+roomId);
+      if (io.sockets.adapter.rooms.has(roomId)) {
+        // action when room already exists
+      } else {
+        console.log(socket.id + 'tried to join ' + roomId + 'but the room does not exist.');
+        // action when room is new
+      };
       socket.join(roomId);
+      console.log(`User ${socket.id} joined room ${roomId}`);
 
       // broadcast an event saying there is a new room
       socket.broadcast.emit(EVENTS.SERVER.ROOMS, rooms);
+      console.log(`Broadcasted new room event to all users`);
 
       // emit back to the room creator with all the rooms
       socket.emit(EVENTS.SERVER.ROOMS, rooms);
-      // emit event back the room creator saying they have joined a room
+      console.log(`Emitted all rooms to the room creator`);
+
+      // emit event back to the room creator saying they have joined a room
       socket.emit(EVENTS.SERVER.JOINED_ROOM, roomId);
+      console.log(`Emitted joined room event to the room creator: ${roomId}`);
     });
 
     /*
