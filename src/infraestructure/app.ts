@@ -35,11 +35,6 @@ dbInit().then(() => console.log("Connection to MongoDB is ready"));
 
 app.listen(PORT, () => console.log(`Hey! Listening on port ${PORT}`));
 
-
-
-
-
-
 app.use(uploadUser.single("photoUser"), routeUser);
 app.use(routeLocation);
 app.use(routeComment);
@@ -58,5 +53,3 @@ app.use(routeApplication);
 
   socket({ io });
 });*/
-
-

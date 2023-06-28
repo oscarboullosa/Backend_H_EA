@@ -115,7 +115,7 @@ const EVENTS = {
 const rooms: Record<string, { name: string }> = {};
 
 function socket({ io }: { io: Server }) {
-  log.info(`Sockets enabled`);
+  log.info("Sockets enabled");
 
   io.on(EVENTS.connection, (socket: Socket) => {
     log.info(`User connected ${socket.id}`);
@@ -125,10 +125,10 @@ function socket({ io }: { io: Server }) {
     /*
      * When a user creates a new room
      */
-    socket.on(EVENTS.CLIENT.CREATE_ROOM, ( {roomName} ) => {
+    socket.on(EVENTS.CLIENT.CREATE_ROOM, ({ roomName }) => {
       console.log({ roomName });
       // create a roomId
-      const roomId = uuidv4();      // add a new room to the rooms object
+      const roomId = uuidv4(); // add a new room to the rooms object
       rooms[roomId] = {
         name: roomName,
       };
